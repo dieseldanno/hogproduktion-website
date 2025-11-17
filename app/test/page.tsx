@@ -4,6 +4,10 @@ export default function Test() {
       <h1>Env Test</h1>
       <pre>DATABASE_URL: {process.env.DATABASE_URL}</pre>
       <pre>NEXTAUTH_SECRET: {process.env.NEXTAUTH_SECRET}</pre>
+      <div className="p-8">
+        <h1>NODE_ENV Test</h1>
+        <pre>{process.env.NODE_ENV}</pre>
+      </div>
     </div>
   );
 }

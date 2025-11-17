@@ -6,7 +6,6 @@ import type { NextAuthOptions } from 'next-auth';
 
 const prisma = new PrismaClient();
 
-// Define the shape of our user in the session
 interface User {
   id: string;
   name: string | null;
@@ -52,8 +51,18 @@ export const authOptions: NextAuthOptions = {
   },
   session: { strategy: 'jwt' },
   secret: process.env.NEXTAUTH_SECRET,
+  // Add this to handle redirects properly
+  callbacks: {
+    async redirect({ url, baseUrl }) {
+      // Allows relative callback URLs
+      if (url.startsWith('/')) return `${baseUrl}${url}`;
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
+    },
+  },
 };
 
-// App Router export
+// App Router export (handles both GET and POST)
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };

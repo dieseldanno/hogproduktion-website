@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "prisma:generate": "dotenv -e .env -- npx prisma generate",
+    "prisma:watch": "dotenv -e .env -- npx prisma generate --watch",
     "prisma:migrate": "dotenv -e .env -- npx prisma migrate dev",
     "prisma:studio": "dotenv -e .env -- npx prisma studio",
     "prisma:seed": "dotenv -e .env -- npx tsx scripts/seed-admin.ts"
