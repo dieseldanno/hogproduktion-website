@@ -11,13 +11,35 @@ datasource db {
 }
 
 model Project {
+  id        String    @id @default(cuid())
+  title     String
+  slug      String    @unique
+  preview   String?
+  content   String?
+  image     String?   
+  video     String?   
+  type      ProjectType @default(IMAGE) 
+
+  isCurrent Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+enum ProjectType {
+  IMAGE
+  TEXT
+  VIDEO
+}
+
+model TeamMember {
   id          String   @id @default(cuid())
-  title       String
-  slug        String   @unique
-  preview     String
-  content     String
-  image       String?
-  isCurrent   Boolean  @default(false)
+  name        String
+  role        String  
+  bio         String
+  email       String?
+  instagram   String?
+  image       String?  
+  order       Int      @default(0) 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

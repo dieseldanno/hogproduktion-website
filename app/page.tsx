@@ -1,43 +1,11 @@
-import prisma from '@/lib/prisma';
-import ProjectCard from '@/components/ProjectCard';
-import Link from 'next/link';
+import Nav from '@/components/Nav';
+import ProjectsSection from '@/components/ProjectsSection';
 
 export default async function HomePage() {
-  const currentProject = await prisma.project.findFirst({
-    where: { isCurrent: true },
-  });
-
   return (
-    <div className="min-h-screen bg-orange-500 text-white">
-      {/* Header */}
-      <header className="flex items-center justify-between p-6">
-        <h1 className="text-4xl font-bold text-pink-600">HÖG</h1>
-        <nav className="space-x-8 text-xl">
-          <Link href="/" className="font-bold underline">
-            AKTUELLT
-          </Link>
-          <Link href="/arkiv" className="opacity-70 hover:opacity-100">
-            ARKIV
-          </Link>
-        </nav>
-      </header>
-
-      {/* Current Project */}
-      <main className="px-6 pb-12">
-        {currentProject ? (
-          <ProjectCard project={currentProject} />
-        ) : (
-          <p className="text-center text-xl">Ingen aktuell produktion.</p>
-        )}
-      </main>
-
-      {/* Footer */}
-      <footer className="border-t-2 border-pink-600 p-6 text-center">
-        <p className="text-sm">
-          © {new Date().getFullYear()} HÖG Produktion
-          <span className="ml-4">Instagram</span>
-        </p>
-      </footer>
-    </div>
+    <>
+      <Nav />
+      <ProjectsSection isCurrent={true} />
+    </>
   );
 }

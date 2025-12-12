@@ -1,13 +1,15 @@
 'use client';
 
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/compat/router';
+// FIX: Change to use useRouter from 'next/navigation' for App Router compatibility
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  // useRouter is now the correct function from next/navigation
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,7 +25,8 @@ export default function LoginPage() {
     if (res?.error) {
       setError('Invalid email or password');
     } else {
-      router?.push('/admin');
+      // This redirect will now work correctly
+      router.push('/admin');
     }
   };
 
@@ -38,7 +41,7 @@ export default function LoginPage() {
 
         <h2 className="text-center text-xl font-semibold">Admin-login</h2>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-6">
           {/* Email */}
           <div>
             <label htmlFor="email" className="sr-only">
@@ -84,8 +87,8 @@ export default function LoginPage() {
         </form>
 
         {/* Hint */}
-        <p className="text-center text-xs opacity-80">
-          Test: <strong>admin@theatre.com</strong> / <strong>admin123</strong>
+        <p className="text-center text-sm opacity-50">
+          * Endast för administratörer
         </p>
       </div>
     </div>

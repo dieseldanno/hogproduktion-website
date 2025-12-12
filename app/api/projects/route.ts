@@ -1,89 +1,58 @@
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]/route';
-import { writeFile } from 'fs/promises';
-import path from 'path';
-import { NextRequest } from 'next/server';
-
-async function generateUniqueSlug(title: string): Promise<string> {
-  let baseSlug = title
-    // Step 1: Normalize to NFD to decompose accented characters (e.g., å → a + ring)
-    .normalize('NFD')
-    // Step 2: Remove diacritics (combining marks)
-    .replace(/[\u0300-\u036f]/g, '')
-    // Step 3: Replace specific Swedish/Nordic letters
-    .replace(/å/g, 'a')
-    .replace(/ä/g, 'a')
-    .replace(/ö/g, 'o')
-    .replace(/Å/g, 'A')
-    .replace(/Ä/g, 'A')
-    .replace(/Ö/g, 'O')
-    .replace(/æ/g, 'ae')
-    .replace(/ø/g, 'o')
-    .replace(/Æ/g, 'AE')
-    .replace(/Ø/g, 'O')
-    // Step 4: Lowercase and replace non-alphanumeric with hyphens
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '') // Trim leading/trailing hyphens
-    .replace(/-+/g, '-'); // Collapse multiple hyphens
-
-  if (!baseSlug) baseSlug = 'projekt';
-
-  let slug = baseSlug;
-  let counter = 2;
-
-  while (true) {
-    const exists = await prisma.project.findUnique({ where: { slug } });
-    if (!exists) break;
-    slug = `${baseSlug}-${counter}`;
-    counter++;
-  }
-
-  return slug;
-}
+import { generateUniqueSlug } from '@/lib/generateSlug';
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session) return new Response('Unauthorized', { status: 401 });
 
-  const data = await req.formData();
-  const title = data.get('title') as string;
-  const preview = data.get('preview') as string;
-  const content = data.get('content') as string;
-  const file = data.get('image') as File | null;
+  // FIX: Read JSON body instead of FormData
+  const body = await req.json();
+
+  const {
+    title,
+    preview,
+    content,
+    image, // This is the URL from AddProjectsForm.tsx
+    video, // This is the URL from AddProjectsForm.tsx
+    type,
+    isCurrent,
+  } = body;
+
+  if (!title) {
+    return new Response('Missing project title', { status: 400 });
+  }
 
   // Generate unique slug
   const slug = await generateUniqueSlug(title);
 
-  let imagePath: string | null = null;
-
-  if (file) {
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    const filename = `${Date.now()}-${file.name}`;
-    const filepath = path.join(process.cwd(), 'public', 'uploads', filename);
-    await writeFile(filepath, buffer);
-    imagePath = `/uploads/${filename}`;
+  // Archive old current project if new one is set to current
+  if (isCurrent === true) {
+    await prisma.project.updateMany({
+      where: { isCurrent: true },
+      data: { isCurrent: false },
+    });
   }
 
-  // Archive old current project
-  await prisma.project.updateMany({
-    where: { isCurrent: true },
-    data: { isCurrent: false },
-  });
+  try {
+    const project = await prisma.project.create({
+      data: {
+        title,
+        slug,
+        preview: preview || null,
+        content: content || null,
+        image: image || null,
+        video: video || null,
+        type: type,
+        isCurrent: isCurrent,
+      },
+    });
 
-  // Create new project with unique slug
-  await prisma.project.create({
-    data: {
-      title,
-      slug,
-      preview,
-      content,
-      image: imagePath,
-      isCurrent: true,
-    },
-  });
-
-  return new Response('OK', { status: 200 });
+    return NextResponse.json(project, { status: 201 });
+  } catch (error) {
+    console.error('Project creation error:', error);
+    return new Response('Could not create project', { status: 500 });
+  }
 }

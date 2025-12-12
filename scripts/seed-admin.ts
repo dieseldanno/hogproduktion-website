@@ -5,16 +5,19 @@ const prisma = new PrismaClient();
 
 async function main() {
   const hashed = await bcrypt.hash('admin123', 10);
+
   await prisma.account.upsert({
     where: { email: 'admin@hogproduktion.se' },
-    update: {},
+    update: { password: hashed },
     create: {
       email: 'admin@hogproduktion.se',
       password: hashed,
-      name: 'Admin User',
+      name: 'Danno',
+      role: 'admin',
     },
   });
-  console.log('Admin user seeded');
+
+  console.log('Admin skapad – lösenord: admin123');
 }
 
 main()
