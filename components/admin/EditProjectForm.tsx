@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { Project } from '@prisma/client';
 import { uploadFile } from '@/lib/upload';
 
@@ -112,10 +113,12 @@ export default function EditProjectForm({ project }: { project: Project }) {
                 </label>
                 {project.image && !imageFile && (
                   <div className="mb-6">
-                    <p className="mb-4 text-xl opacity-80">Nuvarande bild:</p>
-                    <img
-                      src={project.image}
+                    <Image
+                      src={project.image as string}
                       alt="Nuvarande"
+                      width={1280}
+                      height={720}
+                      unoptimized
                       className="max-h-96 rounded-2xl shadow-2xl"
                     />
                   </div>

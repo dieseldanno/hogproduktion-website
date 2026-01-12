@@ -11,7 +11,6 @@ export default async function ProjectPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  // Await params
   const { slug } = await params;
 
   if (!slug) notFound();
@@ -22,34 +21,60 @@ export default async function ProjectPage({
 
   if (!project) notFound();
 
+  const isVideoProject = project.type === 'VIDEO';
+
   return (
     <>
       <Nav />
       <div className="min-h-screen bg-orange-500 text-white">
-        {/* Content */}
-        <main className="mx-auto max-w-4xl px-6 pb-12">
+        <main className="mx-auto max-w-6xl px-6 pt-12 pb-24">
           <Link
             href="/"
-            className="mb-8 inline-block text-pink-300 hover:underline"
+            className="mb-12 inline-flex items-center text-white/80 transition-colors hover:text-white"
           >
-            ← Tillbaka
+            <span className="mr-2">←</span> TILLBAKA
           </Link>
 
-          {project.image && (
-            <div className="relative mb-12 h-[520px] w-full overflow-hidden rounded-lg sm:h-[640px] md:h-[780px] lg:h-[920px]">
-              <Image
-                src={project.image}
-                alt={project.title}
-                fill
-                sizes="(max-width: 640px) 100vw, 50vw"
-                className="object-contain object-center"
-              />
-            </div>
-          )}
+          {/* TITEL - Placerad högst upp för video-projekt enligt önskemål */}
+          <h1 className="mb-8 text-5xl leading-none font-black tracking-tight uppercase sm:text-7xl md:text-8xl">
+            {project.title}
+          </h1>
 
-          <h1 className="mb-4 text-4xl font-bold uppercase">{project.title}</h1>
-          <div className="prose prose-invert max-w-none">
-            <p className="whitespace-pre-wrap">{project.content}</p>
+          {/* MEDIA SEKTION */}
+          <div className="mb-12 w-full">
+            {isVideoProject && project.video ? (
+              /* Om det är en video */
+              <div className="aspect-video w-full overflow-hidden rounded-xl bg-black shadow-2xl">
+                <video
+                  src={project.video}
+                  controls
+                  className="h-full w-full object-contain"
+                  autoPlay
+                  muted={false}
+                />
+              </div>
+            ) : project.image ? (
+              /* Om det är en bild (och inte en video) */
+              <div className="relative h-[520px] w-full overflow-hidden rounded-lg sm:h-[640px] md:h-[780px] lg:h-[920px]">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  sizes="100vw"
+                  className="object-contain object-center"
+                  priority
+                />
+              </div>
+            ) : null}
+          </div>
+
+          {/* TEXTINNEHÅLL */}
+          <div className="max-w-4xl">
+            <div className="prose prose-invert prose-xl max-w-none">
+              <p className="text-xl leading-relaxed whitespace-pre-wrap opacity-95 sm:text-2xl">
+                {project.content || project.preview}
+              </p>
+            </div>
           </div>
         </main>
       </div>

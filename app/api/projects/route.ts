@@ -29,12 +29,12 @@ export async function POST(req: NextRequest) {
   const slug = await generateUniqueSlug(title);
 
   // Archive old current project if new one is set to current
-  if (isCurrent === true) {
-    await prisma.project.updateMany({
-      where: { isCurrent: true },
-      data: { isCurrent: false },
-    });
-  }
+  // if (isCurrent === true) {
+  //   await prisma.project.updateMany({
+  //     where: { isCurrent: true },
+  //     data: { isCurrent: false },
+  //   });
+  // }
 
   try {
     const project = await prisma.project.create({

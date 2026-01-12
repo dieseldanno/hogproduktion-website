@@ -19,12 +19,16 @@ export default function AddProjectForm() {
     e.preventDefault();
     setLoading(true);
 
-    let image: string | null = null;
-    let video: string | null = null;
+    let imageUrl: string | null = null;
+    let videoUrl: string | null = null;
 
     try {
-      if (imageFile) image = await uploadFile(imageFile);
-      if (videoFile) video = await uploadFile(videoFile);
+      // Ladda bara upp det som är relevant för vald typ
+      if (type === 'IMAGE' && imageFile) {
+        imageUrl = await uploadFile(imageFile);
+      } else if (type === 'VIDEO' && videoFile) {
+        videoUrl = await uploadFile(videoFile);
+      }
 
       const res = await fetch('/api/projects', {
         method: 'POST',
@@ -33,8 +37,8 @@ export default function AddProjectForm() {
           title,
           preview: preview || null,
           content: content || null,
-          image,
-          video,
+          image: imageUrl,
+          video: videoUrl,
           type,
           isCurrent,
         }),
@@ -44,10 +48,12 @@ export default function AddProjectForm() {
         router.push('/admin');
         router.refresh();
       } else {
-        alert('Fan... något gick fel');
+        const errorText = await res.text();
+        alert(`Fel: ${errorText}`);
       }
-    } catch (err) {
-      alert('Uppladdning misslyckades');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      alert(`Uppladdning misslyckades: ${message}`);
       console.error(err);
     } finally {
       setLoading(false);

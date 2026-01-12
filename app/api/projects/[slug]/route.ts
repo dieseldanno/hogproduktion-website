@@ -1,8 +1,10 @@
-// app/api/projects/[slug]/route.ts
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { generateUniqueSlug } from '@/lib/generateSlug';
+
+// OBS: config-objektet är borttaget härifrån eftersom det inte stöds i App Router
+// och inte behövs när vi skickar JSON-data.
 
 export async function PUT(
   req: Request,
@@ -14,28 +16,40 @@ export async function PUT(
   const { slug } = await params;
   const body = await req.json();
 
-  const {
-    title,
-    preview,
-    content,
-    image, // ← nu är det en URL från Vercel Blob (eller null)
-    video, // ← ny! video-URL från Vercel Blob (eller null)
-    type, // ← IMAGE | TEXT | VIDEO
-    isCurrent,
-  } = body;
+  const { title, preview, content, image, video, type, isCurrent } = body;
 
-  // Generera ny slug om titeln ändrats
-  const newSlug = title ? await generateUniqueSlug(title) : slug;
+  // Hämta projektet för att se om titeln faktiskt har ändrats
+  const existingProject = await prisma.project.findUnique({
+    where: { slug },
+  });
+
+  if (!existingProject) {
+    return new Response('Project not found', { status: 404 });
+  }
+
+  // Generera ny slug endast om titeln är annorlunda än den befintliga
+  let newSlug = slug;
+  if (title && title !== existingProject.title) {
+    newSlug = await generateUniqueSlug(title);
+  }
+
+  // Om detta projekt sätts till "Current", arkivera alla andra först
+  // if (isCurrent === true) {
+  //   await prisma.project.updateMany({
+  //     where: { isCurrent: true },
+  //     data: { isCurrent: false },
+  //   });
+  // }
 
   const updated = await prisma.project.update({
     where: { slug },
     data: {
       title,
       slug: newSlug,
-      preview: preview || null,
-      content: content || null,
-      image: image || undefined, // behåller gammal om ingen ny
-      video: video || undefined, // behåller gammal video om ingen ny
+      preview: preview ?? null,
+      content: content ?? null,
+      image: image ?? undefined, // Behåller gammal om ingen ny skickas
+      video: video ?? undefined, // Behåller gammal om ingen ny skickas
       type: type || 'IMAGE',
       isCurrent: isCurrent ?? undefined,
     },
