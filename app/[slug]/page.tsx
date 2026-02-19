@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import BackButton from '@/components/BackButton';
+import GallerySlider from '@/components/GallerySlider';
 
 export default async function ProjectPage({
   params,
@@ -69,21 +70,8 @@ export default async function ProjectPage({
 
           {/* Galleri */}
           {project.images.length > 0 && (
-            <div className="mt-24 w-full space-y-12">
-              {project.images.map((img) => (
-                <div
-                  key={img.id}
-                  className="relative h-[520px] w-full overflow-hidden sm:h-[640px] md:h-[780px] lg:h-[920px]"
-                >
-                  <Image
-                    src={img.url}
-                    alt={`Bild från ${project.title}`}
-                    fill
-                    sizes="100vw"
-                    className="object-cover"
-                  />
-                </div>
-              ))}
+            <div className="mt-24 w-full">
+              <GallerySlider images={project.images} title={project.title} />
             </div>
           )}
         </main>
