@@ -13,36 +13,32 @@ interface Props {
 }
 
 export default function ProjectGrid({ projects }: Props) {
-  const layouts = [
-    'w-[90%] md:w-[60%] ml-auto aspect-[3/4]', // liten, höger
-    'w-[95%] md:w-[80%] ml-auto aspect-square', // stor, höger
-    'w-[90%] md:w-[70%] ml-auto aspect-[3/4]', // medium ,höger
+  const sizes = [
+    'w-full max-w-2xl', // liten
+    'w-full max-w-5xl', // stor
+    'w-full max-w-3xl', // medium
   ];
 
   return (
-    <div className="flex flex-col gap-4 py-4 sm:mt-1">
+    <div className="flex flex-col items-end gap-3 py-2">
       {projects.map((p, i) => {
-        const layout = layouts[i % layouts.length];
+        const layout = sizes[i % sizes.length];
 
         return (
-          <Link
-            key={p.id}
-            href={`/${p.slug}`}
-            className={`group relative overflow-hidden ${layout}`}
-          >
-            <Image
-              src={p.url}
-              alt={p.title}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
-            <div className="flex h-full w-full items-center justify-center bg-black text-white">
-              <span className="text-3xl font-bold uppercase">{p.title}</span>
+          <Link key={p.id} href={`/${p.slug}`} className="group relative block">
+            <div className={layout}>
+              <Image
+                src={p.url}
+                alt={p.title}
+                width={1600}
+                height={1000}
+                className="h-auto max-h-[80vh] w-full object-contain"
+                sizes="(max-width: 1024px) 100vw, 1200px"
+              />
             </div>
 
-            <div className="absolute inset-0 flex items-center justify-center md:bg-black/20 md:opacity-0 md:transition-opacity md:duration-500 md:group-hover:opacity-100">
-              <h2 className="text-center text-xl font-bold text-white uppercase md:text-3xl">
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-500 hover:opacity-100">
+              <h2 className="text-center text-xl font-bold text-white uppercase md:text-2xl">
                 {p.title}
               </h2>
             </div>
