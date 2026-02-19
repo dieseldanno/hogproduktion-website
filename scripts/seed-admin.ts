@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  const hashed = await bcrypt.hash('admin123', 10);
+  const hashed = await bcrypt.hash(process.env.ADMIN_PASSWORD!, 12);
 
   await prisma.account.upsert({
     where: { email: 'admin@hogproduktion.se' },
@@ -12,12 +12,10 @@ async function main() {
     create: {
       email: 'admin@hogproduktion.se',
       password: hashed,
-      name: 'Danno',
+      name: 'Admin',
       role: 'admin',
     },
   });
-
-  console.log('Admin skapad – lösenord: admin123');
 }
 
 main()

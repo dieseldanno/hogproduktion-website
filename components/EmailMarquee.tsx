@@ -21,7 +21,7 @@ export default function EmailMarquee() {
       { x: container.offsetWidth },
       {
         x: -track.offsetWidth,
-        duration: 30,
+        duration: 20,
         ease: 'none',
       }
     );

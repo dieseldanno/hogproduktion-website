@@ -30,11 +30,12 @@ body {
 
 h1,
 h2 {
-  font-weight: bolder;
+  font-weight: 600;
 }
 
 p {
-  font-weight: lighter;
+  font-weight: 200;
+  font-size: medium;
 }
 
 /* Dölj scrollbar för alla element med klassen hide-scrollbar */

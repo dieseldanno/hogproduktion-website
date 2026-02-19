@@ -2,7 +2,6 @@
 import { prisma } from '@/lib/prisma';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { Project, ProjectImage } from '@prisma/client';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import BackButton from '@/components/BackButton';

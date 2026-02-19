@@ -16,7 +16,7 @@ export default function Nav() {
     <>
       {/* upper header */}
       <EmailMarquee />
-      <header className="flex items-center justify-between px-6 py-4">
+      <header className="flex items-center justify-between px-6 py-2">
         <Link href="/" className="block">
           <Image
             src={hogLogo}
@@ -29,7 +29,7 @@ export default function Nav() {
         </Link>
         <Link
           href="/om-oss"
-          className={`text-5xl font-black tracking-tight text-white transition hover:opacity-80 ${
+          className={`text-3xl font-black tracking-tight text-white transition hover:opacity-80 ${
             isAboutUsPage ? 'text-white drop-shadow-md' : 'text-white'
           }`}
         >
@@ -38,11 +38,11 @@ export default function Nav() {
       </header>
 
       {/* lower menu */}
-      <div className="bg-[#ff9125] p-6">
+      <div className="p-4">
         <nav className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-10 sm:flex-row sm:gap-20">
           <Link
             href="/aktuellt"
-            className={`text-5xl font-black transition-all duration-300 md:text-6xl ${
+            className={`text-3xl font-bold transition-all duration-300 md:text-5xl ${
               isCurrentPage
                 ? 'text-white drop-shadow-md'
                 : 'text-white/40 hover:text-white/70'
@@ -52,7 +52,7 @@ export default function Nav() {
           </Link>
           <Link
             href="/arkiv"
-            className={`text-5xl font-black transition-all duration-300 md:text-6xl ${
+            className={`text-3xl font-bold transition-all duration-300 md:text-5xl ${
               isArchivePage
                 ? 'text-white drop-shadow-md'
                 : 'text-white/40 hover:text-white/70'

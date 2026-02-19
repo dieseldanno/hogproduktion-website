@@ -120,7 +120,9 @@ export default function AddProjectForm() {
           {/* BILD / VIDEO / TEXT FÄLT */}
           {type === 'IMAGE' && (
             <div>
-              <label className="mb-4 block text-3xl font-black">BILD</label>
+              <label className="mb-4 block text-3xl font-black">
+                POSTERBILD
+              </label>
               <input
                 type="file"
                 accept="image/*"
@@ -135,7 +137,7 @@ export default function AddProjectForm() {
                   onChange={(e) => setPreview(e.target.value)}
                   required
                   rows={3}
-                  className="w-full rounded-2xl border-4 border-white/30 bg-transparent p-6 text-xl placeholder-white/50 sm:text-2xl"
+                  className="w-full rounded-2xl border-4 border-white/30 bg-transparent p-6 text-lg placeholder-white/50 sm:text-xl"
                 />
 
                 <textarea
@@ -198,7 +200,7 @@ export default function AddProjectForm() {
           {/* bildgalleri */}
           <div>
             <label className="mb-4 block text-3xl font-black">
-              BILDGALLERI (VALFRITT) - VÄLJ FLERA BILDER
+              Bildgalleri (valfritt, välj en eller flera bilder)
             </label>
             <input
               type="file"

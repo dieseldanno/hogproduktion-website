@@ -121,9 +121,11 @@ export default function ProjectCard({
           </h2>
         </Link>
 
-        <p className="text-lg leading-relaxed opacity-90 sm:text-xl">
-          {project.content || project.preview}
-        </p>
+        <div className="prose prose-invert prose-xl max-w-none">
+          <p className="text-xl leading-relaxed whitespace-pre-wrap opacity-95 sm:text-2xl">
+            {project.content || project.preview}
+          </p>
+        </div>
       </article>
     );
   }
