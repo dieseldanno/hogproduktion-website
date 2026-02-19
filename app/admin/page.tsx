@@ -13,7 +13,7 @@ export default async function AdminDashboard() {
   });
 
   return (
-    <div className="min-h-screen bg-orange-500 text-white">
+    <div className="min-h-screen bg-[#ff9125] text-white">
       <div className="mx-auto max-w-7xl px-6 py-16">
         <h1 className="mb-12 text-center text-6xl font-black tracking-tighter uppercase drop-shadow-2xl md:text-7xl lg:text-9xl">
           ADMIN PANEL

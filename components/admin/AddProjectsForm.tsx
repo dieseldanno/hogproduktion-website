@@ -10,8 +10,9 @@ export default function AddProjectForm() {
   const [content, setContent] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [galleryFiles, setGalleryFiles] = useState<File[]>([]);
   const [type, setType] = useState<'IMAGE' | 'TEXT' | 'VIDEO'>('IMAGE');
-  const [isCurrent, setIsCurrent] = useState(false);
+  const [isCurrent, setIsCurrent] = useState(true);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -21,13 +22,28 @@ export default function AddProjectForm() {
 
     let imageUrl: string | null = null;
     let videoUrl: string | null = null;
+    const galleryUrls: string[] = [];
 
     try {
       // Ladda bara upp det som är relevant för vald typ
-      if (type === 'IMAGE' && imageFile) {
+      // if (type === 'IMAGE' && imageFile) {
+      //   imageUrl = await uploadFile(imageFile);
+      // } else if (type === 'VIDEO' && videoFile) {
+      //   videoUrl = await uploadFile(videoFile);
+      // }
+      if (imageFile) {
         imageUrl = await uploadFile(imageFile);
-      } else if (type === 'VIDEO' && videoFile) {
+      }
+
+      if (videoFile) {
         videoUrl = await uploadFile(videoFile);
+      }
+
+      if (galleryFiles.length > 0) {
+        for (const file of galleryFiles) {
+          const url = await uploadFile(file);
+          galleryUrls.push(url);
+        }
       }
 
       const res = await fetch('/api/projects', {
@@ -41,6 +57,7 @@ export default function AddProjectForm() {
           video: videoUrl,
           type,
           isCurrent,
+          images: galleryUrls,
         }),
       });
 
@@ -61,7 +78,7 @@ export default function AddProjectForm() {
   };
 
   return (
-    <div className="min-h-screen bg-orange-500 text-white">
+    <div className="min-h-screen bg-[#ff9125] text-white">
       <div className="mx-auto max-w-5xl px-6 py-16">
         <h1 className="mb-16 text-center text-7xl font-black uppercase md:text-9xl">
           NYTT INLÄGG
@@ -145,32 +162,65 @@ export default function AddProjectForm() {
                 required={type === 'VIDEO'}
                 className="block w-full text-xl file:mr-8 file:rounded-full file:bg-pink-600 file:px-12 file:py-6 file:text-2xl file:font-black"
               />
+              <div className="mt-8 flex flex-col gap-8">
+                <textarea
+                  placeholder="KORT TEXT (FÖR PREVIEW)"
+                  value={preview}
+                  onChange={(e) => setPreview(e.target.value)}
+                  required
+                  rows={3}
+                  className="w-full rounded-2xl border-4 border-white/30 bg-transparent p-6 text-xl placeholder-white/50 sm:text-2xl"
+                />
+
+                <textarea
+                  placeholder="FULLSTÄNDIG TEXT"
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  required
+                  rows={10}
+                  className="w-full rounded-2xl border-4 border-white/30 bg-transparent p-6 text-lg placeholder-white/50 sm:text-xl"
+                />
+              </div>
             </div>
           )}
 
-          {type !== 'IMAGE' && (
+          {type === 'TEXT' && (
             <textarea
-              placeholder={
-                type === 'TEXT' ? 'HEL TEXT' : 'BESKRIVNING UNDER VIDEON'
-              }
+              placeholder="FULLSTÄNDIG TEXT"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              required={type === 'TEXT'}
+              required
               rows={10}
               className="w-full rounded-2xl border-4 border-white/30 bg-transparent p-10 text-2xl placeholder-white/50"
             />
           )}
 
+          {/* bildgalleri */}
+          <div>
+            <label className="mb-4 block text-3xl font-black">
+              BILDGALLERI (VALFRITT) - VÄLJ FLERA BILDER
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={(e) =>
+                setGalleryFiles(Array.from(e.target.files || []))
+              }
+              className="block w-full text-xl file:mr-8 file:rounded-full file:bg-pink-600 file:px-12 file:py-6 file:text-2xl file:font-black"
+            />
+          </div>
+
           {/* AKTUELL? */}
-          <div className="flex items-center justify-center gap-12 border-t-4 border-pink-600 py-12">
+          <div className="flex flex-col items-center gap-12 border-t-4 border-pink-600 py-12">
             <span className="text-4xl font-black">AKTUELLT?</span>
             <button
               type="button"
               onClick={() => setIsCurrent(!isCurrent)}
-              className={`relative inline-flex h-20 w-40 rounded-full ${isCurrent ? 'bg-green-500' : 'bg-gray-600'}`}
+              className={`relative inline-flex h-20 w-40 rounded-full transition-all ${isCurrent ? 'bg-green-500' : 'bg-gray-600'}`}
             >
               <span
-                className={`inline-block h-16 w-16 rounded-full bg-white shadow-2xl transition-transform ${isCurrent ? 'translate-x-24' : 'translate-x-2'}`}
+                className={`inline-block h-20 w-20 rounded-full bg-white shadow-2xl transition-transform ${isCurrent ? 'translate-x-24' : 'translate-x-4'}`}
               />
             </button>
             <span className="text-6xl font-black">
@@ -181,7 +231,7 @@ export default function AddProjectForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-full bg-pink-600 py-12 text-6xl font-black uppercase shadow-2xl hover:bg-pink-700 disabled:opacity-50"
+            className="w-full rounded-full bg-pink-600 py-14 text-6xl font-black tracking-wider uppercase shadow-2xl transition hover:bg-pink-700 disabled:opacity-50 md:text-7xl"
           >
             {loading ? 'LADDAR UPP...' : 'PUBLICERA'}
           </button>

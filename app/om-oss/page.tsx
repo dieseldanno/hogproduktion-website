@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma';
 import Image from 'next/image';
 import { Mail, Heart } from 'lucide-react';
 import Nav from '@/components/Nav';
+import Footer from '@/components/Footer';
 
 export default async function OmOssPage() {
   const members = await prisma.teamMember.findMany({
@@ -11,8 +12,17 @@ export default async function OmOssPage() {
   return (
     <>
       <Nav />
-      <div className="min-h-screen bg-orange-500 text-white">
+      <div className="min-h-screen bg-[#ff9125] text-white">
         <main className="mx-auto max-w-7xl px-6 py-20">
+          {/* fixa detta!  */}
+          <p className="px-8">
+            HÖGproduktion bildades våren 2024 och verkar för att konstnärer ska
+            kunna experimentera fritt med form och uttryck i scenkonstfältet.
+            Med särskilt fokus på queera perspektiv, normbrytande sexualitet och
+            erfarenheter av marginalisering, arbetar kollektivet i en
+            experimentell och tillåtande miljö där gränser tänjs och nya
+            sceniska möjligheter får ta plats.
+          </p>
           <h1 className="mb-20 text-center text-7xl font-black tracking-tighter uppercase drop-shadow-2xl md:text-9xl">
             VI PÅ HÖG
           </h1>
@@ -88,6 +98,7 @@ export default async function OmOssPage() {
           )}
         </main>
       </div>
+      <Footer />
     </>
   );
 }

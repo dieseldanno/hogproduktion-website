@@ -31,7 +31,7 @@ export default async function ProjectActionPage({
   if (!project) notFound();
 
   return (
-    <div className="min-h-screen bg-orange-500 p-8 text-white">
+    <div className="min-h-screen bg-[#ff9125] p-8 text-white">
       <Link
         href="/admin"
         className="mb-8 inline-block text-pink-300 hover:underline"

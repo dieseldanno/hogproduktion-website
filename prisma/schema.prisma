@@ -23,12 +23,25 @@ model Project {
   isCurrent Boolean   @default(false)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+
+  images    ProjectImage[]
 }
 
 enum ProjectType {
   IMAGE
   TEXT
   VIDEO
+}
+
+model ProjectImage {
+  id        String   @id @default(cuid())
+  url       String
+  order     Int      @default(0)
+
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+
+  createdAt DateTime @default(now())
 }
 
 model TeamMember {

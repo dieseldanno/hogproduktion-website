@@ -19,6 +19,7 @@ export async function POST(req: NextRequest) {
     video, // This is the URL from AddProjectsForm.tsx
     type,
     isCurrent,
+    images, // This is the array of URLs from AddProjectsForm.tsx
   } = body;
 
   if (!title) {
@@ -47,6 +48,12 @@ export async function POST(req: NextRequest) {
         video: video || null,
         type: type,
         isCurrent: isCurrent,
+        images: {
+          create: images?.map((url: string, index: number) => ({
+            url,
+            order: index,
+          })),
+        },
       },
     });
 

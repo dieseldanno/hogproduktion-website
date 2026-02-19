@@ -1,20 +1,22 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import hogLogo from '@/public/hog-logo.svg';
+import hogLogo from '@/public/hoglogoblack.png';
 import Link from 'next/link';
 import Image from 'next/image';
+import EmailMarquee from './EmailMarquee';
 
 export default function Nav() {
   const pathname = usePathname();
-  const isCurrentPage = pathname === '/';
+  const isCurrentPage = pathname === '/aktuellt';
   const isArchivePage = pathname === '/arkiv';
   const isAboutUsPage = pathname === '/om-oss';
 
   return (
     <>
       {/* upper header */}
-      <header className="flex items-center justify-between bg-pink-600 px-6 py-4">
+      <EmailMarquee />
+      <header className="flex items-center justify-between px-6 py-4">
         <Link href="/" className="block">
           <Image
             src={hogLogo}
@@ -28,9 +30,7 @@ export default function Nav() {
         <Link
           href="/om-oss"
           className={`text-5xl font-black tracking-tight text-white transition hover:opacity-80 ${
-            isAboutUsPage
-              ? 'text-white underline decoration-4 underline-offset-8 drop-shadow-md'
-              : 'text-white'
+            isAboutUsPage ? 'text-white drop-shadow-md' : 'text-white'
           }`}
         >
           OM OSS
@@ -38,13 +38,13 @@ export default function Nav() {
       </header>
 
       {/* lower menu */}
-      <div className="bg-orange-500 p-6">
+      <div className="bg-[#ff9125] p-6">
         <nav className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-10 sm:flex-row sm:gap-20">
           <Link
-            href="/"
+            href="/aktuellt"
             className={`text-5xl font-black transition-all duration-300 md:text-6xl ${
               isCurrentPage
-                ? 'text-white underline decoration-8 underline-offset-8 drop-shadow-md'
+                ? 'text-white drop-shadow-md'
                 : 'text-white/40 hover:text-white/70'
             }`}
           >
@@ -54,7 +54,7 @@ export default function Nav() {
             href="/arkiv"
             className={`text-5xl font-black transition-all duration-300 md:text-6xl ${
               isArchivePage
-                ? 'text-white underline decoration-8 underline-offset-8 drop-shadow-md'
+                ? 'text-white drop-shadow-md'
                 : 'text-white/40 hover:text-white/70'
             }`}
           >

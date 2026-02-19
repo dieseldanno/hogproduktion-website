@@ -23,7 +23,7 @@ export default async function ProjectsSection({
 
   if (projects.length === 0) {
     return (
-      <div className="flex min-h-screen flex-col bg-orange-500 text-white">
+      <div className="flex min-h-screen flex-col bg-[#ff9125] text-white">
         <main className="flex-1 px-6 py-32 text-center">
           <p className="text-3xl leading-tight font-black md:text-5xl">
             {emptyMessage || defaultEmpty}
@@ -36,10 +36,10 @@ export default async function ProjectsSection({
   // current:
   if (isCurrent) {
     return (
-      <div className="min-h-screen bg-orange-500 text-white">
+      <div className="min-h-screen bg-[#ff9125] text-white">
         <main className="px-6 py-12">
           <div className="mx-auto max-w-6xl">
-            <div className="space-y-24">
+            <div className="space-y-16 md:space-y-20">
               {projects.map((project, index) => (
                 <div
                   key={project.id}
@@ -62,7 +62,7 @@ export default async function ProjectsSection({
 
   // archive:
   return (
-    <div className="flex min-h-screen flex-col bg-orange-500 text-white">
+    <div className="flex min-h-screen flex-col bg-[#ff9125] text-white">
       <main className="px-6 py-12">
         <div className="mx-auto max-w-4xl">
           <div className="space-y-24">

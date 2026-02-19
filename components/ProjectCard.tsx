@@ -14,103 +14,117 @@ export default function ProjectCard({
   const isTextProject = project.type === 'TEXT';
   const isVideoProject = project.type === 'VIDEO';
 
+  const getVideoThumbnail = (videoUrl: string): string => {
+    return videoUrl
+      .replace('/video/upload/', '/video/upload/so_2/')
+      .replace('.mp4', '.jpg');
+  };
+
   // --- LAYOUT FÖR VIDEO (Fullbredd, staplad) ---
   if (isVideoProject) {
     return (
-      <Link href={`/${project.slug}`} className="block">
-        <article className="group flex w-full flex-col space-y-8">
-          {/* 1. Titel överst */}
-          <h2 className="text-left text-5xl leading-none font-black tracking-tight uppercase sm:text-6xl md:text-8xl">
+      <article className="group my-24 flex w-full flex-col space-y-5 sm:mb-32">
+        {/* 1. Titel överst */}
+        <Link href={`/${project.slug}`} className="block">
+          <h2 className="text-left text-3xl leading-none font-black tracking-tight uppercase sm:text-4xl md:text-5xl">
             {project.title}
           </h2>
+        </Link>
 
-          {/* 2. Video i mitten - Full bredd */}
-          <div className="w-full overflow-hidden rounded-xl bg-black shadow-2xl">
-            {project.video ? (
-              <div className="aspect-video w-full">
-                <video
-                  src={project.video}
-                  controls
-                  className="h-full w-full object-cover"
-                  // Optional: lägg till poster={project.image} om du har en thumbnail
-                />
-              </div>
-            ) : (
-              <div className="flex h-[400px] items-center justify-center border-2 border-dashed border-pink-600">
-                <span className="text-gray-500">Videofil saknas</span>
-              </div>
-            )}
-          </div>
+        {/* 2. Video i mitten - Full bredd */}
+        <div className="w-full overflow-hidden bg-black shadow-2xl">
+          {project.video ? (
+            <div className="aspect-video w-full">
+              <video
+                src={project.video}
+                poster={getVideoThumbnail(project.video)}
+                controls
+                className="h-full w-full object-cover"
+                // Optional: lägg till poster={project.image} om du har en thumbnail
+              />
+            </div>
+          ) : (
+            <div className="flex h-[400px] items-center justify-center border-2 border-dashed border-pink-600">
+              <span className="text-gray-500">Videofil saknas</span>
+            </div>
+          )}
+        </div>
 
-          {/* 3. Text och knapp underst */}
-          <div className="flex max-w-4xl flex-col space-y-6">
-            <p className="text-lg leading-relaxed opacity-90 sm:text-2xl">
-              {project.preview}
-            </p>
-            <span className="inline-flex w-fit items-center rounded-full bg-pink-600 px-12 py-5 font-bold tracking-wider text-white uppercase shadow-xl transition-all hover:scale-105 hover:bg-pink-700">
-              Läs mer
+        {/* 3. Text och knapp underst */}
+        <div className="flex max-w-4xl flex-col space-y-6">
+          <p className="text-lg leading-relaxed opacity-90 sm:text-2xl">
+            {project.preview}
+          </p>
+          <Link href={`/${project.slug}`} className="block">
+            <span className="text-custom-pink inline-block font-bold uppercase underline">
+              Se mer
             </span>
-          </div>
-        </article>
-      </Link>
+          </Link>
+        </div>
+      </article>
     );
   }
 
-  // --- LAYOUT FÖR BILDER OCH TEXT (Original-layouten) ---
-  const articleClasses = isTextProject
-    ? 'flex flex-col items-stretch gap-8 group'
-    : `flex flex-col items-stretch gap-12 sm:gap-20 ${
-        reverseOnDesktop ? 'sm:flex-row-reverse' : 'sm:flex-row'
-      } group`;
+  // --- LAYOUT FÖR BILDER OCH TEXT
 
-  return (
-    <Link href={`/${project.slug}`} className="block">
-      <article className={articleClasses}>
-        {/* Poster - syns bara för IMAGE/PROJECT */}
-        {!isTextProject && (
-          <div className="w-full sm:w-1/2">
-            {project.image ? (
-              <div className="relative h-[520px] w-full overflow-hidden rounded-lg sm:h-[640px] md:h-[780px] lg:h-[920px]">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  sizes="(max-width: 640px) 100vw, 50vw"
-                  className="object-contain object-center"
-                  priority
-                />
-              </div>
-            ) : (
-              <div className="flex h-[520px] w-full items-center justify-center rounded-lg border-2 border-dashed border-pink-600 bg-gray-800 sm:h-[640px]">
-                <span className="text-xl text-gray-500">Ingen bild</span>
-              </div>
-            )}
-          </div>
-        )}
+  if (!isTextProject && !isVideoProject) {
+    return (
+      <article
+        className={`my-24 flex flex-col gap-12 sm:mb-32 sm:gap-18 ${
+          reverseOnDesktop ? 'sm:flex-row-reverse' : 'sm:flex-row'
+        }`}
+      >
+        {/* TEXT-SIDA */}
+        <div className="flex w-full flex-col justify-center space-y-5 sm:w-2/5">
+          <Link href={`/${project.slug}`} className="block">
+            <h2 className="text-3xl leading-none font-black tracking-tight uppercase sm:text-4xl md:text-5xl">
+              {project.title}
+            </h2>
+          </Link>
 
-        {/* Textinnehåll för vanliga inlägg */}
-        <div
-          className={`flex w-full flex-col justify-center space-y-8 px-6 sm:px-0 ${
-            isTextProject ? '' : 'sm:w-1/2'
-          }`}
-        >
-          <h2 className="text-left text-5xl leading-none font-black tracking-tight uppercase sm:text-6xl md:text-7xl">
-            {project.title}
-          </h2>
-          <p
-            className={`text-lg leading-relaxed opacity-90 sm:text-xl ${
-              isTextProject ? 'max-w-none' : 'max-w-lg'
-            }`}
-          >
-            {isTextProject
-              ? project.content || project.preview
-              : project.preview}
+          <p className="max-w-lg text-lg leading-relaxed opacity-90 sm:text-xl">
+            {project.preview}
           </p>
-          <span className="inline-flex w-fit items-center rounded-full bg-pink-600 px-12 py-5 font-bold tracking-wider text-white uppercase shadow-xl transition-all hover:scale-105 hover:bg-pink-700">
-            Läs mer
-          </span>
+
+          <Link href={`/${project.slug}`} className="block">
+            <span className="text-custom-pink inline-block font-bold uppercase underline">
+              Se mer
+            </span>
+          </Link>
+        </div>
+
+        {/* BILD-SIDA */}
+        <div className="w-full sm:w-3/5">
+          {project.image && (
+            <div className="relative w-full overflow-hidden">
+              <Image
+                src={project.image}
+                alt={project.title}
+                width={1200}
+                height={1500}
+                sizes="(max-width: 640px) 100vw, 50vw"
+                className="h-auto w-full object-cover"
+              />
+            </div>
+          )}
         </div>
       </article>
-    </Link>
-  );
+    );
+  }
+
+  if (isTextProject) {
+    return (
+      <article className="my-24 flex flex-col space-y-6 sm:mb-32">
+        <Link href={`/${project.slug}`} className="block">
+          <h2 className="text-3xl leading-none font-black tracking-tight uppercase sm:text-4xl md:text-5xl">
+            {project.title}
+          </h2>
+        </Link>
+
+        <p className="text-lg leading-relaxed opacity-90 sm:text-xl">
+          {project.content || project.preview}
+        </p>
+      </article>
+    );
+  }
 }

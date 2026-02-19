@@ -3,9 +3,6 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { generateUniqueSlug } from '@/lib/generateSlug';
 
-// OBS: config-objektet är borttaget härifrån eftersom det inte stöds i App Router
-// och inte behövs när vi skickar JSON-data.
-
 export async function PUT(
   req: Request,
   { params }: { params: Promise<{ slug: string }> }
@@ -32,14 +29,6 @@ export async function PUT(
   if (title && title !== existingProject.title) {
     newSlug = await generateUniqueSlug(title);
   }
-
-  // Om detta projekt sätts till "Current", arkivera alla andra först
-  // if (isCurrent === true) {
-  //   await prisma.project.updateMany({
-  //     where: { isCurrent: true },
-  //     data: { isCurrent: false },
-  //   });
-  // }
 
   const updated = await prisma.project.update({
     where: { slug },
