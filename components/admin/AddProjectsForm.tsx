@@ -78,7 +78,7 @@ export default function AddProjectForm() {
   };
 
   return (
-    <div className="min-h-screen bg-[#ff9125] text-white">
+    <div className="min-h-screen">
       <div className="mx-auto max-w-5xl px-6 py-16">
         <h1 className="mb-16 text-center text-7xl font-black uppercase md:text-9xl">
           NYTT INLÄGG

@@ -14,7 +14,7 @@ export default function BackButton() {
           router.push('/');
         }
       }}
-      className="text-custom-pink mb-12 inline-flex items-center font-bold"
+      className="text-custom-pink mb-12 inline-flex cursor-pointer items-center font-bold"
     >
       <span className="mr-2">←</span> TILLBAKA
     </button>

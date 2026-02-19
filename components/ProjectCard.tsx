@@ -26,7 +26,7 @@ export default function ProjectCard({
       <article className="group my-24 flex w-full flex-col space-y-5 sm:mb-32">
         {/* 1. Titel överst */}
         <Link href={`/${project.slug}`} className="block">
-          <h2 className="text-left text-3xl leading-none font-black tracking-tight uppercase sm:text-4xl md:text-5xl">
+          <h2 className="outline-text-black text-left text-3xl leading-none font-black tracking-tight uppercase sm:text-4xl md:text-5xl">
             {project.title}
           </h2>
         </Link>
@@ -56,7 +56,7 @@ export default function ProjectCard({
             {project.preview}
           </p>
           <Link href={`/${project.slug}`} className="block">
-            <span className="text-custom-pink inline-block font-bold uppercase underline">
+            <span className="text-custom-pink inline-block font-bold uppercase">
               Se mer
             </span>
           </Link>
@@ -77,7 +77,7 @@ export default function ProjectCard({
         {/* TEXT-SIDA */}
         <div className="flex w-full flex-col justify-center space-y-5 sm:w-2/5">
           <Link href={`/${project.slug}`} className="block">
-            <h2 className="text-3xl leading-none font-black tracking-tight uppercase sm:text-4xl md:text-5xl">
+            <h2 className="outline-text-black text-3xl leading-none font-black tracking-tight uppercase sm:text-4xl md:text-5xl">
               {project.title}
             </h2>
           </Link>
@@ -87,23 +87,23 @@ export default function ProjectCard({
           </p>
 
           <Link href={`/${project.slug}`} className="block">
-            <span className="text-custom-pink inline-block font-bold uppercase underline">
+            <span className="text-custom-pink inline-block font-bold uppercase">
               Se mer
             </span>
           </Link>
         </div>
 
         {/* BILD-SIDA */}
-        <div className="w-full sm:w-3/5">
+        <div className="flex w-full justify-center sm:w-3/5">
           {project.image && (
-            <div className="relative w-full overflow-hidden">
+            <div className="relative w-full max-w-3xl overflow-hidden">
               <Image
                 src={project.image}
                 alt={project.title}
                 width={1200}
                 height={1500}
                 sizes="(max-width: 640px) 100vw, 50vw"
-                className="h-auto w-full object-cover"
+                className="h-auto max-h-[80vh] w-full object-contain"
               />
             </div>
           )}
@@ -116,7 +116,7 @@ export default function ProjectCard({
     return (
       <article className="my-24 flex flex-col space-y-6 sm:mb-32">
         <Link href={`/${project.slug}`} className="block">
-          <h2 className="text-3xl leading-none font-black tracking-tight uppercase sm:text-4xl md:text-5xl">
+          <h2 className="outline-text-black text-3xl leading-none font-black tracking-tight uppercase sm:text-4xl md:text-5xl">
             {project.title}
           </h2>
         </Link>

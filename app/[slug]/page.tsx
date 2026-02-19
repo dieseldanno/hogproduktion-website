@@ -28,31 +28,32 @@ export default async function ProjectPage({
   return (
     <>
       <Nav />
-      <div className="min-h-screen bg-[#ff9125] text-white">
-        <main className="mx-auto max-w-6xl px-6 pt-12 pb-24">
+      <div className="min-h-screen bg-white text-[#ff9125]">
+        <main className="mx-auto max-w-6xl px-6 pt-1 pb-24">
           <BackButton />
-          <h1 className="mb-8 text-5xl leading-none font-black tracking-tight uppercase sm:text-7xl md:text-8xl">
+          <h1 className="outline-text-black mb-6 text-center text-3xl leading-none font-black tracking-tight uppercase sm:text-5xl md:text-7xl">
             {project.title}
           </h1>
 
           {/* Huvudbild / video */}
-          <div className="mb-12 w-full">
+          <div className="mb-6 flex w-full justify-center">
             {project.video ? (
-              <div className="aspect-video w-full overflow-hidden rounded-xl bg-black shadow-2xl">
+              <div className="w-full max-w-6xl overflow-hidden">
                 <video
                   src={project.video}
                   controls
-                  className="h-full w-full object-contain"
+                  className="h-auto max-h-[80vh] w-full object-contain"
                 />
               </div>
             ) : project.image ? (
-              <div className="relative h-[520px] w-full overflow-hidden rounded-lg sm:h-[640px] md:h-[780px] lg:h-[920px]">
+              <div className="mb-6 w-full max-w-6xl overflow-hidden">
                 <Image
                   src={project.image}
                   alt={project.title}
-                  fill
+                  width={1600}
+                  height={1000}
+                  className="h-auto max-h-[80vh] w-full object-contain"
                   sizes="100vw"
-                  className="object-contain"
                   priority
                 />
               </div>

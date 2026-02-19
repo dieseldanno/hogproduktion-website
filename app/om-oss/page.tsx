@@ -12,7 +12,7 @@ export default async function OmOssPage() {
   return (
     <>
       <Nav />
-      <div className="min-h-screen bg-[#ff9125] text-white">
+      <div className="min-h-screen">
         <main className="mx-auto max-w-7xl px-6 py-20">
           {/* fixa detta!  */}
           <p className="px-8 leading-relaxed md:px-16">

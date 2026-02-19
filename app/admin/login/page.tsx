@@ -1,7 +1,6 @@
 'use client';
 
 import { signIn } from 'next-auth/react';
-// FIX: Change to use useRouter from 'next/navigation' for App Router compatibility
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -9,7 +8,6 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  // useRouter is now the correct function from next/navigation
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -25,17 +23,16 @@ export default function LoginPage() {
     if (res?.error) {
       setError('Invalid email or password');
     } else {
-      // This redirect will now work correctly
       router.push('/admin');
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#ff9125] text-white">
+    <div className="flex min-h-screen items-center justify-center">
       {/* Card */}
       <div className="w-full max-w-md space-y-8 rounded-lg bg-white/10 p-8 shadow-xl backdrop-blur-sm">
         {/* Logo */}
-        <h1 className="text-center text-5xl font-black tracking-wider text-[#F6339A]">
+        <h1 className="text-center text-5xl font-black tracking-wider text-[#F17700]">
           HÖG
         </h1>
 
@@ -80,7 +77,7 @@ export default function LoginPage() {
           {/* Submit */}
           <button
             type="submit"
-            className="w-full rounded bg-[#F6339A] py-3 font-bold tracking-wider text-white uppercase transition hover:bg-[#d92b87] focus:outline-none"
+            className="w-full rounded bg-[#F17700] py-3 font-bold tracking-wider text-white uppercase transition hover:bg-[#F66000] focus:outline-none"
           >
             Logga in
           </button>

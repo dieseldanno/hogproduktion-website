@@ -30,7 +30,7 @@ export default function TeamMemberClient({
   };
 
   return (
-    <div className="min-h-screen bg-[#ff9125] text-white">
+    <div className="min-h-screen">
       <Link
         href="/admin"
         className="mb-8 inline-block text-pink-300 hover:underline"

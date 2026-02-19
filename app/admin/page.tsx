@@ -13,7 +13,7 @@ export default async function AdminDashboard() {
   });
 
   return (
-    <div className="min-h-screen bg-[#ff9125] text-white">
+    <div className="min-h-screen">
       <div className="mx-auto max-w-7xl px-6 py-16">
         <h1 className="mb-12 text-center text-6xl font-black tracking-tighter uppercase drop-shadow-2xl md:text-7xl lg:text-9xl">
           ADMIN PANEL
@@ -26,7 +26,7 @@ export default async function AdminDashboard() {
             </h2>
             <Link
               href="/admin/about"
-              className="rounded-full bg-pink-600 px-8 py-5 text-center text-2xl font-black shadow-2xl transition hover:bg-pink-700 md:text-3xl"
+              className="bg-custom-pink rounded-full px-8 py-5 text-center text-2xl font-black shadow-2xl transition hover:bg-pink-700 md:text-3xl"
             >
               REDIGERA OM OSS
             </Link>
@@ -41,7 +41,7 @@ export default async function AdminDashboard() {
             </h2>
             <Link
               href="/admin/projects/new"
-              className="rounded-full bg-pink-600 px-8 py-5 text-center text-2xl font-black shadow-2xl transition hover:bg-pink-700 md:text-3xl"
+              className="bg-custom-pink rounded-full px-8 py-5 text-center text-2xl font-black shadow-2xl transition hover:bg-pink-700 md:text-3xl"
             >
               + NY PRODUKTION
             </Link>

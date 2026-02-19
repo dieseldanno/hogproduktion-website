@@ -81,12 +81,12 @@ export default async function Home() {
 
         {/* GRID LAYOUT */}
         <div className="relative grid h-full grid-cols-2">
-          {/* VÄNSTER - egen scroll */}
+          {/* VÄNSTER egen scroll */}
           <div className="hide-scrollbar z-30 overflow-y-auto p-2 sm:p-8">
             <ProjectTitleGrid />
           </div>
 
-          {/* HÖGER - egen scroll */}
+          {/* HÖGER egen scroll */}
           <div className="hide-scrollbar overflow-y-auto p-2">
             <ProjectGrid projects={shuffledImages} />
           </div>
