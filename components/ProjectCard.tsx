@@ -23,9 +23,9 @@ export default function ProjectCard({
   // --- LAYOUT FÖR VIDEO (Fullbredd, staplad) ---
   if (isVideoProject) {
     return (
-      <article className="group my-24 flex w-full flex-col space-y-5 sm:mb-32">
+      <article className="group my-24 flex w-full flex-col items-start space-y-5 sm:mb-32">
         {/* 1. Titel överst */}
-        <Link href={`/${project.slug}`} className="block">
+        <Link href={`/${project.slug}`} className="block self-start">
           <h2 className="outline-text-black text-left text-3xl leading-none font-black tracking-tight uppercase sm:text-4xl md:text-5xl">
             {project.title}
           </h2>
@@ -51,11 +51,11 @@ export default function ProjectCard({
         </div>
 
         {/* 3. Text och knapp underst */}
-        <div className="flex max-w-4xl flex-col space-y-6">
+        <div className="flex max-w-4xl flex-col items-start space-y-6">
           <p className="text-lg leading-relaxed opacity-90 sm:text-2xl">
             {project.preview}
           </p>
-          <Link href={`/${project.slug}`} className="block">
+          <Link href={`/${project.slug}`} className="block self-start">
             <span className="text-custom-pink inline-block font-bold uppercase">
               Se mer
             </span>
@@ -75,9 +75,9 @@ export default function ProjectCard({
         }`}
       >
         {/* TEXT-SIDA */}
-        <div className="flex w-full flex-col justify-center space-y-5 sm:w-2/5">
-          <Link href={`/${project.slug}`} className="block">
-            <h2 className="outline-text-black text-3xl leading-none font-black tracking-tight uppercase sm:text-4xl md:text-5xl">
+        <div className="flex w-full flex-col items-start justify-center space-y-5 sm:w-2/5">
+          <Link href={`/${project.slug}`} className="block self-start">
+            <h2 className="outline-text-black inline-block text-3xl leading-none font-black tracking-tight uppercase sm:text-4xl md:text-5xl">
               {project.title}
             </h2>
           </Link>
@@ -86,7 +86,7 @@ export default function ProjectCard({
             {project.preview}
           </p>
 
-          <Link href={`/${project.slug}`} className="block">
+          <Link href={`/${project.slug}`} className="block self-start">
             <span className="text-custom-pink inline-block font-bold uppercase">
               Se mer
             </span>
@@ -115,7 +115,7 @@ export default function ProjectCard({
   if (isTextProject) {
     return (
       <article className="my-24 flex flex-col space-y-6 sm:mb-32">
-        <Link href={`/${project.slug}`} className="block">
+        <Link href={`/${project.slug}`} className="block self-start">
           <h2 className="outline-text-black text-3xl leading-none font-black tracking-tight uppercase sm:text-4xl md:text-5xl">
             {project.title}
           </h2>

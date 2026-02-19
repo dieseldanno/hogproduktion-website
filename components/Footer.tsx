@@ -26,8 +26,13 @@ export default function Footer() {
             <FaFacebookF />
           </Link>
         </div>
-        <div className="mt-4 text-sm text-white/50">
-          © {new Date().getFullYear()} HÖGproduktion
+        <div className="flex flex-col items-center gap-2 text-sm">
+          <a
+            href="mailto:hogproduktion@gmail.com"
+            className="text-white/70 transition hover:text-black/50"
+          >
+            hogproduktion@gmail.com
+          </a>
         </div>
       </div>
     </footer>
