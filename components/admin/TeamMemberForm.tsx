@@ -76,7 +76,6 @@ export default function TeamMemberForm() {
         placeholder="ROLL"
         value={role}
         onChange={(e) => setRole(e.target.value)}
-        required
         className="w-full rounded-lg border-4 border-black bg-slate-50 p-5 text-2xl font-black text-black placeholder-slate-500"
       />
       <textarea
