@@ -61,7 +61,7 @@ export default function Nav() {
           </Link>
           <Link
             href="/om-oss"
-            className={`text-xl font-bold transition-transform duration-300 hover:scale-105 md:text-2xl ${
+            className={`text-xl font-bold whitespace-nowrap transition-transform duration-300 hover:scale-105 md:text-2xl ${
               isAboutUsPage
                 ? 'text-custom-orange drop-shadow-md'
                 : 'text-custom-orange-40 hover:text-custom-orange-70'
