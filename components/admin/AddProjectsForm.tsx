@@ -135,8 +135,7 @@ export default function AddProjectForm() {
                   placeholder="KORT TEXT (FÖR PREVIEW)"
                   value={preview}
                   onChange={(e) => setPreview(e.target.value)}
-                  required
-                  rows={3}
+                  rows={5}
                   className="w-full rounded-2xl border-2 border-slate-300 bg-slate-50 p-6 text-lg text-slate-900 placeholder-slate-400 focus:border-slate-500 focus:outline-none sm:text-xl"
                 />
 
@@ -169,8 +168,7 @@ export default function AddProjectForm() {
                   placeholder="KORT TEXT (FÖR PREVIEW)"
                   value={preview}
                   onChange={(e) => setPreview(e.target.value)}
-                  required
-                  rows={3}
+                  rows={5}
                   className="w-full rounded-2xl border-2 border-slate-300 bg-slate-50 p-6 text-lg text-slate-900 placeholder-slate-400 focus:border-slate-500 focus:outline-none sm:text-xl"
                 />
 

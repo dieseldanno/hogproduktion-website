@@ -52,9 +52,11 @@ export default function ProjectCard({
 
         {/* 3. Text och knapp underst */}
         <div className="flex max-w-4xl flex-col items-start space-y-6">
-          <p className="text-lg leading-relaxed opacity-90 sm:text-2xl">
-            {project.preview}
-          </p>
+          <div className="prose prose-invert prose-xl max-w-none">
+            <p className="text-xl leading-relaxed whitespace-pre-wrap opacity-95 sm:text-2xl">
+              {project.preview}
+            </p>
+          </div>
           <Link href={`/${project.slug}`} className="block self-start">
             <span className="text-custom-pink inline-block font-bold uppercase">
               Se mer
@@ -82,9 +84,11 @@ export default function ProjectCard({
             </h2>
           </Link>
 
-          <p className="max-w-lg text-lg leading-relaxed opacity-90 sm:text-xl">
-            {project.preview}
-          </p>
+          <div className="prose prose-invert prose-xl max-w-none">
+            <p className="text-xl leading-relaxed whitespace-pre-wrap opacity-95 sm:text-2xl">
+              {project.preview}
+            </p>
+          </div>
 
           <Link href={`/${project.slug}`} className="block self-start">
             <span className="text-custom-pink inline-block font-bold uppercase">
