@@ -20,7 +20,7 @@ export default function ProjectGrid({ projects }: Props) {
   ];
 
   return (
-    <div className="flex flex-col items-end gap-3 py-2">
+    <div className="flex flex-col items-end gap-3">
       {projects.map((p, i) => {
         const layout = sizes[i % sizes.length];
 
