@@ -147,10 +147,11 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
           {/* PREVIEW & CONTENT */}
           <div className="mt-8 flex flex-col gap-8">
             {type !== 'TEXT' && (
-              <input
+              <textarea
                 placeholder="KORT PREVIEW – VISAS I LISTAN"
                 value={preview}
                 onChange={(e) => setPreview(e.target.value)}
+                rows={5}
                 className="w-full rounded-2xl border-2 border-slate-300 bg-slate-50 p-6 text-lg text-slate-900 placeholder-slate-400 focus:border-slate-500 focus:outline-none sm:text-xl"
               />
             )}
