@@ -37,8 +37,8 @@ export default function ProjectGrid({ projects }: Props) {
               />
             </div>
 
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-500 hover:opacity-100">
-              <h2 className="text-center text-xl font-bold text-white uppercase md:text-2xl">
+            <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-500 hover:opacity-100 md:opacity-0">
+              <h2 className="text-center text-sm text-white uppercase md:text-2xl md:font-bold">
                 {p.title}
               </h2>
             </div>

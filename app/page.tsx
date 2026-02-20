@@ -88,7 +88,7 @@ export default async function Home() {
               fontSize: 'clamp(160px, 12vw, 180px)',
               lineHeight: '0.75',
               transform: 'rotate(-12deg) scale(1.2)', // Rotera och skala upp för att fylla ut
-              filter: 'blur(2px)', // Valfritt: lite blur gör det ännu mer "bakgrunds-aktigt"
+              // filter: 'blur(1px)', // Valfritt: lite blur gör det ännu mer "bakgrunds-aktigt"
               width: '150%', // Bredare än skärmen
               textAlign: 'center',
             }}
