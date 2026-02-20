@@ -110,7 +110,7 @@ export default async function Home() {
           </div>
 
           {/* HÖGER egen scroll */}
-          <div className="hide-scrollbar z-30 overflow-y-auto p-2">
+          <div className="hide-scrollbar z-30 overflow-y-auto py-2">
             <ProjectGrid projects={shuffledImages} />
           </div>
         </div>
