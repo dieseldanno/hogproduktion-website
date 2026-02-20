@@ -16,7 +16,6 @@ export default async function ProjectsSection({
     where: { isCurrent },
     orderBy: { createdAt: 'desc' }, // nyast först
   });
-
   const defaultEmpty = isCurrent
     ? 'Inga aktuella produktioner just nu.'
     : 'Inga arkiverade produktioner än';

@@ -32,9 +32,7 @@ export default function LoginPage() {
       {/* Card */}
       <div className="w-full max-w-md space-y-8 rounded-lg bg-white/10 p-8 shadow-xl backdrop-blur-sm">
         {/* Logo */}
-        <h1 className="text-center text-5xl font-black tracking-wider text-[#F17700]">
-          HÖG
-        </h1>
+        <h1 className="text-center text-5xl font-black tracking-wider">HÖG</h1>
 
         <h2 className="text-center text-xl font-semibold">Admin-login</h2>
 
@@ -51,7 +49,7 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full rounded border border-white/30 bg-transparent px-4 py-3 text-white placeholder-white/70 focus:border-[#F6339A] focus:outline-none"
+              className="w-full rounded border border-slate-600 bg-transparent px-4 py-3 placeholder-slate-500 focus:border-[#F6339A] focus:outline-none"
             />
           </div>
 
@@ -67,7 +65,7 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="placeholder-white/ bins70 w-full rounded border border-white/30 bg-transparent px-4 py-3 text-white focus:border-[#F6339A] focus:outline-none"
+              className="w-full rounded border border-slate-600 bg-transparent px-4 py-3 placeholder-slate-500 focus:border-[#F6339A] focus:outline-none"
             />
           </div>
 
