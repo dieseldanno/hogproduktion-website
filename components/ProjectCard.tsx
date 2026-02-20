@@ -26,7 +26,7 @@ export default function ProjectCard({
       <article className="group my-24 flex w-full flex-col items-start space-y-5 sm:mb-32">
         {/* 1. Titel överst */}
         <Link href={`/${project.slug}`} className="block self-start">
-          <h2 className="outline-text-black text-left text-3xl leading-none font-black tracking-tight uppercase sm:text-4xl md:text-5xl">
+          <h2 className="text-left text-3xl leading-none font-black tracking-tight uppercase sm:text-4xl md:text-5xl">
             {project.title}
           </h2>
         </Link>
@@ -77,7 +77,7 @@ export default function ProjectCard({
         {/* TEXT-SIDA */}
         <div className="flex w-full flex-col items-start justify-center space-y-5 sm:w-2/5">
           <Link href={`/${project.slug}`} className="block self-start">
-            <h2 className="outline-text-black inline-block text-3xl leading-none font-black tracking-tight uppercase sm:text-4xl md:text-5xl">
+            <h2 className="inline-block text-3xl leading-none font-black tracking-tight uppercase sm:text-4xl md:text-5xl">
               {project.title}
             </h2>
           </Link>
@@ -116,7 +116,7 @@ export default function ProjectCard({
     return (
       <article className="my-24 flex flex-col space-y-6 sm:mb-32">
         <Link href={`/${project.slug}`} className="block self-start">
-          <h2 className="outline-text-black text-3xl leading-none font-black tracking-tight uppercase sm:text-4xl md:text-5xl">
+          <h2 className="text-3xl leading-none font-black tracking-tight uppercase sm:text-4xl md:text-5xl">
             {project.title}
           </h2>
         </Link>

@@ -38,7 +38,7 @@ export default function TeamMemberClient({
         ← Tillbaka
       </Link>
       <div className="mx-auto max-w-4xl px-6 py-12">
-        <h1 className="mb-12 text-center text-6xl font-black tracking-tighter uppercase md:text-8xl">
+        <h1 className="mb-12 text-center text-6xl font-black tracking-tighter text-slate-800 uppercase md:text-8xl">
           REDIGERA OM OSS
         </h1>
 
@@ -59,7 +59,7 @@ export default function TeamMemberClient({
               {members.map((member) => (
                 <div
                   key={member.id}
-                  className="flex items-center justify-between rounded-2xl bg-white/10 p-6 backdrop-blur-sm"
+                  className="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 p-6 backdrop-blur-sm"
                 >
                   <div className="flex items-center gap-8">
                     {member.image ? (
@@ -68,14 +68,14 @@ export default function TeamMemberClient({
                         alt={member.name}
                         width={120}
                         height={120}
-                        className="h-30 w-30 rounded-full object-cover ring-4 ring-pink-600"
+                        className="h-30 w-30 rounded-full object-cover ring-4 ring-orange-500"
                       />
                     ) : (
-                      <div className="h-30 w-30 rounded-full bg-white/20" />
+                      <div className="h-30 w-30 rounded-full bg-slate-200" />
                     )}
                     <div>
                       <h3 className="text-3xl font-black">{member.name}</h3>
-                      <p className="text-2xl text-pink-300">{member.role}</p>
+                      <p className="text-2xl text-orange-500">{member.role}</p>
                       {member.instagram && (
                         <p className="text-lg opacity-80">
                           @{member.instagram}
@@ -86,7 +86,7 @@ export default function TeamMemberClient({
 
                   <button
                     onClick={() => handleDelete(member.id, member.name)}
-                    className="rounded-full bg-red-600 px-8 py-4 text-xl font-bold uppercase transition hover:bg-red-700"
+                    className="rounded-full bg-rose-500 px-8 py-4 text-xl font-bold uppercase transition hover:bg-rose-600"
                   >
                     Ta bort
                   </button>

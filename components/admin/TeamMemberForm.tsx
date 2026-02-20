@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { uploadFile } from '@/lib/upload';
 
 export default function TeamMemberForm() {
   const [name, setName] = useState('');
@@ -17,49 +18,66 @@ export default function TeamMemberForm() {
     e.preventDefault();
     setLoading(true);
 
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('role', role);
-    formData.append('bio', bio);
-    if (email) formData.append('email', email);
-    if (instagram) formData.append('instagram', instagram);
-    if (image) formData.append('image', image);
+    try {
+      let imageUrl: string | null = null;
 
-    const res = await fetch('/api/team', {
-      method: 'POST',
-      body: formData,
-    });
+      //
+      if (image) {
+        imageUrl = await uploadFile(image);
+      }
 
-    if (res.ok) {
+      //
+      const res = await fetch('/api/team', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          role,
+          bio,
+          email: email || null,
+          instagram: instagram || null,
+          image: imageUrl,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error(await res.text());
+      }
+
+      // reset
       setName('');
       setRole('');
       setBio('');
       setEmail('');
       setInstagram('');
       setImage(null);
+
       router.refresh();
-    } else {
+    } catch (err) {
+      console.error(err);
       alert('Något gick fel');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-    window.location.reload();
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6 text-black">
       <input
         placeholder="NAMN"
         value={name}
         onChange={(e) => setName(e.target.value)}
         required
-        className="w-full rounded-lg border-4 border-white/30 bg-transparent p-5 text-2xl font-black placeholder-white/50"
+        className="w-full rounded-lg border-4 border-black bg-slate-50 p-5 text-2xl font-black text-black placeholder-white/50"
       />
       <input
         placeholder="ROLL"
         value={role}
         onChange={(e) => setRole(e.target.value)}
         required
-        className="w-full rounded-lg border-4 border-white/30 bg-transparent p-5 text-2xl font-black placeholder-white/50"
+        className="w-full rounded-lg border-4 border-black bg-slate-50 p-5 text-2xl font-black text-black placeholder-slate-500"
       />
       <textarea
         placeholder='LÅNG TEXT – "VEM ÄR JAG"'
@@ -67,25 +85,25 @@ export default function TeamMemberForm() {
         value={bio}
         onChange={(e) => setBio(e.target.value)}
         required
-        className="w-full rounded-lg border-4 border-white/30 bg-transparent p-5 text-xl placeholder-white/50"
+        className="w-full rounded-lg border-4 border-black bg-slate-50 p-5 text-xl text-black placeholder-slate-500"
       />
       <input
         type="file"
         accept="image/*"
         onChange={(e) => setImage(e.target.files?.[0] || null)}
-        className="block w-full text-lg file:mr-6 file:rounded-full file:bg-pink-600 file:px-8 file:py-4 file:text-white"
+        className="block w-full text-lg file:mr-6 file:rounded-full file:bg-pink-600 file:px-8 file:py-4 file:text-black"
       />
       <input
         placeholder="INSTAGRAM"
         value={instagram}
         onChange={(e) => setInstagram(e.target.value)}
-        className="w-full rounded-lg border-4 border-white/30 bg-transparent p-5 text-xl placeholder-white/50"
+        className="w-full rounded-lg border-4 border-black bg-transparent p-5 text-xl placeholder-slate-500"
       />
       <input
         placeholder="MAIL"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="w-full rounded-lg border-4 border-white/30 bg-transparent p-5 text-xl placeholder-white/50"
+        className="w-full rounded-lg border-4 border-black bg-transparent p-5 text-xl placeholder-slate-500"
       />
 
       <button

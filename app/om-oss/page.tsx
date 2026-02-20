@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import Image from 'next/image';
-import { Mail, Heart } from 'lucide-react';
+import { Mail } from 'lucide-react';
+import { FaInstagram } from 'react-icons/fa';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 
@@ -14,8 +15,8 @@ export default async function OmOssPage() {
       <Nav />
       <div className="min-h-screen">
         <main className="mx-auto max-w-7xl px-6 py-20">
-          {/* fixa detta!  */}
-          <p className="px-8 leading-relaxed md:px-16">
+          {/* INTRO TEXT */}
+          <p className="mb-20 px-8 text-lg leading-relaxed md:px-16 md:text-xl">
             HÖGproduktion bildades våren 2024 och verkar för att konstnärer ska
             kunna experimentera fritt med form och uttryck i scenkonstfältet.
             Med särskilt fokus på queera perspektiv, normbrytande sexualitet och
@@ -24,7 +25,7 @@ export default async function OmOssPage() {
             sceniska möjligheter får ta plats.
           </p>
 
-          {/* grid */}
+          {/* GRID MED ASYMMETRISK LAYOUT */}
           {members.length === 0 ? (
             <div className="py-32 text-center">
               <p className="text-4xl font-black opacity-70 md:text-6xl">
@@ -32,43 +33,46 @@ export default async function OmOssPage() {
               </p>
             </div>
           ) : (
-            <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-3">
-              {members.map((member) => (
+            <div className="grid auto-rows-min gap-12 md:grid-cols-2 lg:grid-cols-3">
+              {members.map((member, i) => (
                 <div
                   key={member.id}
-                  className="group overflow-hidden rounded-3xl bg-white/10 backdrop-blur-lg transition-all hover:scale-105 hover:bg-white/20"
+                  className={`group relative overflow-hidden rounded-3xl bg-white/10 backdrop-blur-lg transition-transform duration-500 hover:scale-105 hover:bg-white/20`}
+                  style={{
+                    transform: `rotate(${[-2, 0, 2][i % 3]}deg)`,
+                  }}
                 >
                   {/* BILD */}
                   {member.image ? (
-                    <div className="aspect-square overflow-hidden">
+                    <div className="aspect-[4/5] overflow-hidden">
                       <Image
                         src={member.image}
                         alt={member.name}
                         width={300}
-                        height={300}
+                        height={375}
                         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
                     </div>
                   ) : (
-                    <div className="aspect-square bg-white/20" />
+                    <div className="aspect-[4/5] bg-white/20" />
                   )}
 
                   {/* TEXT */}
                   <div className="p-8">
                     <h2 className="mb-2 text-4xl font-black">{member.name}</h2>
-                    <p className="mb-4 text-2xl font-bold text-pink-300">
+                    <p className="mb-4 text-2xl font-bold text-orange-500">
                       {member.role}
                     </p>
-                    <p className="text-lg leading-relaxed opacity-90">
+                    <p className="mb-6 text-lg leading-relaxed opacity-90">
                       {member.bio}
                     </p>
 
                     {/* KONTAKT */}
-                    <div className="mt-8 flex gap-6">
+                    <div className="flex flex-wrap gap-6">
                       {member.email && (
                         <a
                           href={`mailto:${member.email}`}
-                          className="flex items-center gap-3 text-white/70 transition hover:text-white"
+                          className="text-custom-orange hover:text-custom-pink flex items-center gap-3 transition"
                         >
                           <Mail size={28} />
                           <span className="text-sm underline">Mail</span>
@@ -79,9 +83,9 @@ export default async function OmOssPage() {
                           href={`https://instagram.com/${member.instagram.replace('@', '')}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-3 text-white/70 transition hover:text-white"
+                          className="text-custom-orange hover:text-custom-pink flex items-center gap-3 transition"
                         >
-                          <Heart size={28} />
+                          <FaInstagram size={28} /> {/* här */}
                           <span className="text-sm underline">
                             @{member.instagram.replace('@', '')}
                           </span>

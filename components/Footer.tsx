@@ -6,7 +6,7 @@ import { FaInstagram, FaFacebookF } from 'react-icons/fa';
 export default function Footer() {
   return (
     <footer className="border-custom-pink border-t py-4">
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-4 text-white">
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-4">
         {/* Social icons */}
         <div className="flex gap-6">
           <Link
@@ -29,7 +29,7 @@ export default function Footer() {
         <div className="flex flex-col items-center gap-2 text-sm">
           <a
             href="mailto:hogproduktion@gmail.com"
-            className="text-white/70 transition hover:text-black/50"
+            className="text-custom-orange-70 hover:text-custom-orange transition"
           >
             hogproduktion@gmail.com
           </a>

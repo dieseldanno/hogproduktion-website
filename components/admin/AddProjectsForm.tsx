@@ -79,14 +79,14 @@ export default function AddProjectForm() {
 
   return (
     <div className="min-h-screen">
-      <div className="mx-auto max-w-5xl px-6 py-16">
-        <h1 className="mb-16 text-center text-7xl font-black uppercase md:text-9xl">
+      <div className="mx-auto max-w-4xl px-6 py-16">
+        <h1 className="mb-16 text-center text-5xl font-black uppercase md:text-7xl">
           NYTT INLÄGG
         </h1>
 
         <form
           onSubmit={handleSubmit}
-          className="space-y-12 rounded-3xl bg-white/10 p-12 backdrop-blur-lg"
+          className="space-y-12 rounded-3xl border p-12 text-black backdrop-blur-lg"
         >
           {/* TITEL */}
           <input
@@ -94,7 +94,7 @@ export default function AddProjectForm() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
-            className="w-full rounded-2xl border-4 border-white/30 bg-transparent p-8 text-5xl font-black placeholder-white/50"
+            className="w-full rounded-2xl border-2 border-slate-300 bg-slate-50 p-8 text-3xl font-black text-slate-900 placeholder-slate-400 focus:border-slate-600 focus:outline-none"
           />
 
           {/* VÄLJ TYP */}
@@ -104,10 +104,10 @@ export default function AddProjectForm() {
                 key={t}
                 type="button"
                 onClick={() => setType(t)}
-                className={`rounded-3xl p-12 text-4xl font-black transition-all ${
+                className={`cursor-pointer rounded-3xl border-2 border-emerald-700 p-12 text-4xl font-black transition-all ${
                   type === t
-                    ? 'bg-pink-600 shadow-2xl ring-8 ring-pink-400'
-                    : 'bg-white/20'
+                    ? 'bg-emerald-400 shadow-2xl ring-8 ring-emerald-200'
+                    : 'bg-white'
                 }`}
               >
                 {t === 'IMAGE' && 'BILD'}
@@ -128,7 +128,7 @@ export default function AddProjectForm() {
                 accept="image/*"
                 onChange={(e) => setImageFile(e.target.files?.[0] || null)}
                 required={type === 'IMAGE'}
-                className="block w-full text-xl file:mr-8 file:rounded-full file:bg-pink-600 file:px-12 file:py-6 file:text-2xl file:font-black"
+                className="block w-full cursor-pointer text-xl file:mr-8 file:rounded-full file:bg-slate-300 file:px-12 file:py-6 file:text-2xl file:font-black"
               />
               <div className="mt-8 flex flex-col gap-8">
                 <textarea
@@ -137,7 +137,7 @@ export default function AddProjectForm() {
                   onChange={(e) => setPreview(e.target.value)}
                   required
                   rows={3}
-                  className="w-full rounded-2xl border-4 border-white/30 bg-transparent p-6 text-lg placeholder-white/50 sm:text-xl"
+                  className="w-full rounded-2xl border-2 border-slate-300 bg-slate-50 p-6 text-lg text-slate-900 placeholder-slate-400 focus:border-slate-500 focus:outline-none sm:text-xl"
                 />
 
                 <textarea
@@ -146,7 +146,7 @@ export default function AddProjectForm() {
                   onChange={(e) => setContent(e.target.value)}
                   required
                   rows={10}
-                  className="w-full rounded-2xl border-4 border-white/30 bg-transparent p-6 text-lg placeholder-white/50 sm:text-xl"
+                  className="w-full rounded-2xl border-2 border-slate-300 bg-slate-50 p-6 text-lg text-slate-900 placeholder-slate-400 focus:border-slate-500 focus:outline-none sm:text-xl"
                 />
               </div>
             </div>
@@ -162,7 +162,7 @@ export default function AddProjectForm() {
                 accept="video/*"
                 onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
                 required={type === 'VIDEO'}
-                className="block w-full text-xl file:mr-8 file:rounded-full file:bg-pink-600 file:px-12 file:py-6 file:text-2xl file:font-black"
+                className="block w-full cursor-pointer text-xl file:mr-8 file:rounded-full file:bg-slate-300 file:px-12 file:py-6 file:text-2xl file:font-black"
               />
               <div className="mt-8 flex flex-col gap-8">
                 <textarea
@@ -171,7 +171,7 @@ export default function AddProjectForm() {
                   onChange={(e) => setPreview(e.target.value)}
                   required
                   rows={3}
-                  className="w-full rounded-2xl border-4 border-white/30 bg-transparent p-6 text-xl placeholder-white/50 sm:text-2xl"
+                  className="w-full rounded-2xl border-2 border-slate-300 bg-slate-50 p-6 text-lg text-slate-900 placeholder-slate-400 focus:border-slate-500 focus:outline-none sm:text-xl"
                 />
 
                 <textarea
@@ -180,7 +180,7 @@ export default function AddProjectForm() {
                   onChange={(e) => setContent(e.target.value)}
                   required
                   rows={10}
-                  className="w-full rounded-2xl border-4 border-white/30 bg-transparent p-6 text-lg placeholder-white/50 sm:text-xl"
+                  className="w-full rounded-2xl border-2 border-slate-300 bg-slate-50 p-6 text-lg text-slate-900 placeholder-slate-400 focus:border-slate-500 focus:outline-none sm:text-xl"
                 />
               </div>
             </div>
@@ -193,7 +193,7 @@ export default function AddProjectForm() {
               onChange={(e) => setContent(e.target.value)}
               required
               rows={10}
-              className="w-full rounded-2xl border-4 border-white/30 bg-transparent p-10 text-2xl placeholder-white/50"
+              className="w-full rounded-2xl border-2 border-slate-300 bg-slate-50 p-6 text-lg text-slate-900 placeholder-slate-400 focus:border-slate-500 focus:outline-none sm:text-xl"
             />
           )}
 
@@ -209,23 +209,23 @@ export default function AddProjectForm() {
               onChange={(e) =>
                 setGalleryFiles(Array.from(e.target.files || []))
               }
-              className="block w-full text-xl file:mr-8 file:rounded-full file:bg-pink-600 file:px-12 file:py-6 file:text-2xl file:font-black"
+              className="block w-full cursor-pointer text-xl file:mr-8 file:rounded-full file:bg-slate-300 file:px-12 file:py-6 file:text-2xl file:font-black"
             />
           </div>
 
           {/* AKTUELL? */}
-          <div className="flex flex-col items-center gap-12 border-t-4 border-pink-600 py-12">
+          <div className="flex flex-col items-center gap-12 border-t-4 border-slate-400 py-12">
             <span className="text-4xl font-black">AKTUELLT?</span>
             <button
               type="button"
               onClick={() => setIsCurrent(!isCurrent)}
-              className={`relative inline-flex h-20 w-40 rounded-full transition-all ${isCurrent ? 'bg-green-500' : 'bg-gray-600'}`}
+              className={`relative inline-flex h-20 w-40 rounded-full transition-all ${isCurrent ? 'bg-emerald-400' : 'bg-slate-500'}`}
             >
               <span
                 className={`inline-block h-20 w-20 rounded-full bg-white shadow-2xl transition-transform ${isCurrent ? 'translate-x-24' : 'translate-x-4'}`}
               />
             </button>
-            <span className="text-6xl font-black">
+            <span className="text-4xl font-black">
               {isCurrent ? 'JA' : 'NEJ'}
             </span>
           </div>
@@ -233,7 +233,7 @@ export default function AddProjectForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-full bg-pink-600 py-14 text-6xl font-black tracking-wider uppercase shadow-2xl transition hover:bg-pink-700 disabled:opacity-50 md:text-7xl"
+            className="w-full rounded-full bg-slate-500 py-8 text-4xl font-black tracking-wider uppercase shadow-2xl transition hover:bg-slate-600 disabled:opacity-50 md:text-5xl"
           >
             {loading ? 'LADDAR UPP...' : 'PUBLICERA'}
           </button>

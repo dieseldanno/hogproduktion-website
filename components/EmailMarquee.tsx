@@ -42,7 +42,7 @@ export default function EmailMarquee() {
   return (
     <div
       ref={containerRef}
-      className="border-custom-pink relative w-full overflow-hidden border-b"
+      className="border-custom-pink relative z-10 w-full overflow-hidden border-b"
     >
       <div
         ref={trackRef}

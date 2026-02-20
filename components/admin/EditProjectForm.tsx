@@ -75,14 +75,14 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
 
   return (
     <div className="min-h-screen">
-      <div className="mx-auto max-w-5xl px-6 py-16">
-        <h1 className="mb-16 text-center text-7xl font-black uppercase md:text-9xl">
+      <div className="mx-auto max-w-4xl px-6 py-16">
+        <h1 className="mb-16 text-center text-5xl font-black uppercase md:text-7xl">
           REDIGERA INLÄGG
         </h1>
 
         <form
           onSubmit={handleSubmit}
-          className="space-y-12 rounded-3xl bg-white/10 p-12 backdrop-blur-lg"
+          className="space-y-12 rounded-3xl border p-12 text-black backdrop-blur-lg"
         >
           {/* TITEL */}
           <input
@@ -90,10 +90,9 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
-            className="w-full rounded-2xl border-4 border-white/30 bg-transparent p-8 text-5xl font-black placeholder-white/50"
+            className="w-full rounded-2xl border-2 border-slate-300 bg-slate-50 p-8 text-3xl font-black text-slate-900 placeholder-slate-400 focus:border-slate-600 focus:outline-none"
           />
 
-          {/* NU VISAR VI RÄTT FÄLT BASERAT PÅ TYP */}
           {type === 'IMAGE' && (
             <div>
               <label className="mb-4 block text-3xl font-black">
@@ -115,7 +114,7 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
                 type="file"
                 accept="image/*"
                 onChange={(e) => setImageFile(e.target.files?.[0] || null)}
-                className="block w-full text-xl file:mr-8 file:rounded-full file:bg-pink-600 file:px-12 file:py-6 file:text-2xl file:font-black"
+                className="block w-full text-xl file:mr-8 file:rounded-full file:bg-slate-300 file:px-12 file:py-6 file:text-2xl file:font-black"
               />
             </div>
           )}
@@ -140,7 +139,7 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
                 type="file"
                 accept="video/*"
                 onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
-                className="block w-full text-xl file:mr-8 file:rounded-full file:bg-pink-600 file:px-12 file:py-6 file:text-2xl file:font-black"
+                className="block w-full text-xl file:mr-8 file:rounded-full file:bg-slate-300 file:px-12 file:py-6 file:text-2xl file:font-black"
               />
             </div>
           )}
@@ -152,7 +151,7 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
                 placeholder="KORT PREVIEW – VISAS I LISTAN"
                 value={preview}
                 onChange={(e) => setPreview(e.target.value)}
-                className="w-full rounded-2xl border-4 border-white/30 bg-transparent p-8 text-2xl placeholder-white/50"
+                className="w-full rounded-2xl border-2 border-slate-300 bg-slate-50 p-6 text-lg text-slate-900 placeholder-slate-400 focus:border-slate-500 focus:outline-none sm:text-xl"
               />
             )}
 
@@ -162,7 +161,7 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
               onChange={(e) => setContent(e.target.value)}
               required
               rows={10}
-              className="w-full rounded-2xl border-4 border-white/30 bg-transparent p-6 text-lg placeholder-white/50 sm:text-xl"
+              className="w-full rounded-2xl border-2 border-slate-300 bg-slate-50 p-6 text-lg text-slate-900 placeholder-slate-400 focus:border-slate-500 focus:outline-none sm:text-xl"
             />
           </div>
 
@@ -197,20 +196,20 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
               onChange={(e) =>
                 setGalleryFiles(Array.from(e.target.files || []))
               }
-              className="block w-full text-xl file:mr-8 file:rounded-full file:bg-pink-600 file:px-12 file:py-6 file:text-2xl file:font-black"
+              className="block w-full text-xl file:mr-8 file:rounded-full file:bg-slate-300 file:px-12 file:py-6 file:text-2xl file:font-black"
             />
           </div>
 
           {/* AKTUELL? */}
-          <div className="flex flex-col items-center gap-12 border-t-4 border-pink-600 py-16">
-            <span className="text-center text-5xl font-black">
+          <div className="flex flex-col items-center gap-12 border-t-4 border-slate-400 py-16">
+            <span className="text-center text-4xl font-black">
               AKTUELLT INLÄGG?
             </span>
             <button
               type="button"
               onClick={() => setIsCurrent(!isCurrent)}
               className={`relative inline-flex h-24 w-48 rounded-full transition-all ${
-                isCurrent ? 'bg-green-500' : 'bg-gray-600'
+                isCurrent ? 'bg-emerald-400' : 'bg-slate-500'
               }`}
             >
               <span
@@ -219,7 +218,7 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
                 }`}
               />
             </button>
-            <span className="text-6xl font-black">
+            <span className="text-4xl font-black">
               {isCurrent ? 'JA' : 'NEJ'}
             </span>
           </div>
@@ -228,7 +227,7 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-full bg-pink-600 py-14 text-6xl font-black tracking-wider uppercase shadow-2xl transition hover:bg-pink-700 disabled:opacity-50 md:text-7xl"
+            className="w-full rounded-full bg-slate-500 py-14 text-4xl font-black tracking-wider uppercase shadow-2xl transition hover:bg-slate-600 disabled:opacity-50 md:text-5xl"
           >
             {loading ? 'SPARAR...' : 'SPARA ÄNDRINGAR'}
           </button>

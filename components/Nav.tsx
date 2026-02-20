@@ -17,27 +17,27 @@ export default function Nav() {
     <>
       {/* upper header */}
       <EmailMarquee />
-      <header className="flex flex-col items-center justify-center px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
+      <header className="flex flex-col items-center justify-center px-6 py-1 sm:flex-row sm:items-center sm:justify-between">
         {/* LOGO */}
         <Link href="/">
           <Image
             src={hogLogo}
             alt="HÖG Produktion"
-            width={400}
-            height={400}
-            className="h-28 w-auto sm:h-36"
+            width={100}
+            height={100}
+            className="h-20 w-auto sm:h-24"
             priority
           />
         </Link>
 
         {/* MENY */}
-        <nav className="flex flex-col items-center gap-4 sm:flex-row sm:gap-8">
+        <nav className="mt-4 flex flex-col items-center gap-2 sm:mt-0 sm:flex-row sm:gap-8">
           <Link
             href="/aktuellt"
-            className={`text-2xl font-bold transition-transform duration-300 hover:scale-105 md:text-4xl ${
+            className={`text-xl font-bold transition-transform duration-300 hover:scale-105 md:text-2xl ${
               isCurrentPage
-                ? 'text-white drop-shadow-md'
-                : 'text-white/40 hover:text-white/70'
+                ? 'text-custom-orange drop-shadow-md'
+                : 'text-custom-orange-40 hover:text-custom-orange-70'
             }`}
           >
             AKTUELLT
@@ -45,10 +45,10 @@ export default function Nav() {
 
           <Link
             href="/arkiv"
-            className={`text-2xl font-bold transition-transform duration-300 hover:scale-105 md:text-4xl ${
+            className={`text-xl font-bold transition-transform duration-300 hover:scale-105 md:text-2xl ${
               isArchivePage
-                ? 'text-white drop-shadow-md'
-                : 'text-white/40 hover:text-white/70'
+                ? 'text-custom-orange drop-shadow-md'
+                : 'text-custom-orange-40 hover:text-custom-orange-70'
             }`}
           >
             ARKIV
@@ -56,10 +56,10 @@ export default function Nav() {
 
           <Link
             href="/om-oss"
-            className={`text-2xl font-bold transition-transform duration-300 hover:scale-105 md:text-4xl ${
+            className={`text-xl font-bold transition-transform duration-300 hover:scale-105 md:text-2xl ${
               isAboutUsPage
-                ? 'text-white drop-shadow-md'
-                : 'text-white/40 hover:text-white/70'
+                ? 'text-custom-orange drop-shadow-md'
+                : 'text-custom-orange-40 hover:text-custom-orange-70'
             }`}
           >
             OM OSS
@@ -86,32 +86,6 @@ export default function Nav() {
           </Link>
         </div>
       </header>
-
-      {/* lower menu */}
-      {/* <div className="p-4">
-        <nav className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-10 sm:flex-row sm:gap-20">
-          <Link
-            href="/aktuellt"
-            className={`text-3xl font-bold transition-all duration-300 md:text-5xl ${
-              isCurrentPage
-                ? 'text-white drop-shadow-md'
-                : 'text-white/40 hover:text-white/70'
-            }`}
-          >
-            AKTUELLT
-          </Link>
-          <Link
-            href="/arkiv"
-            className={`text-3xl font-bold transition-all duration-300 md:text-5xl ${
-              isArchivePage
-                ? 'text-white drop-shadow-md'
-                : 'text-white/40 hover:text-white/70'
-            }`}
-          >
-            ARKIV
-          </Link>
-        </nav>
-      </div> */}
     </>
   );
 }

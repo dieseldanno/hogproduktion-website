@@ -2,25 +2,25 @@ import Link from 'next/link';
 
 export default function MenuGrid() {
   return (
-    <div className="relative mt-40 flex flex-col items-start p-2 md:mt-24 md:p-8">
-      <div className="outline-text-black flex flex-col gap-8 text-2xl leading-none font-bold text-white uppercase sm:text-5xl md:gap-12 md:text-7xl">
-        <Link
-          href="/om-oss"
-          className="inline-block transition duration-300 hover:text-gray-800 hover:drop-shadow-sm"
-        >
-          OM OSS
-        </Link>
+    <div className="relative flex flex-col items-start p-2">
+      <div className="text-custom-orange flex flex-col gap-4 text-center text-2xl leading-none font-bold uppercase sm:text-3xl md:gap-6">
         <Link
           href="/aktuellt"
-          className="inline-block transition duration-300 hover:text-gray-800 hover:drop-shadow-sm"
+          className="hover:text-custom-pink inline-block bg-black px-2 py-1 transition duration-300 hover:drop-shadow-sm"
         >
           AKTUELLT
         </Link>
         <Link
           href="/arkiv"
-          className="hover:text-custom-pink inline-block transition duration-300 hover:drop-shadow-sm"
+          className="hover:text-custom-pink inline-block bg-black px-2 py-1 transition duration-300 hover:drop-shadow-sm"
         >
           ARKIV
+        </Link>
+        <Link
+          href="/om-oss"
+          className="hover:text-custom-pink inline-block bg-black px-2 py-1 transition duration-300 hover:drop-shadow-sm"
+        >
+          OM OSS
         </Link>
       </div>
     </div>

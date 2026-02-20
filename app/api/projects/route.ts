@@ -8,7 +8,6 @@ export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session) return new Response('Unauthorized', { status: 401 });
 
-  // FIX: Read JSON body instead of FormData
   const body = await req.json();
 
   const {

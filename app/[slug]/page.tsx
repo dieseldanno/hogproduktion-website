@@ -28,10 +28,10 @@ export default async function ProjectPage({
   return (
     <>
       <Nav />
-      <div className="min-h-screen bg-white text-[#ff9125]">
-        <main className="mx-auto max-w-6xl px-6 pt-1 pb-24">
+      <div className="min-h-screen">
+        <main className="mx-auto max-w-6xl px-6 pt-1 pb-8">
           <BackButton />
-          <h1 className="outline-text-black mb-6 text-center text-3xl leading-none font-black tracking-tight uppercase sm:text-5xl md:text-7xl">
+          <h1 className="mb-6 text-center text-3xl leading-none font-black tracking-tight uppercase sm:text-5xl md:text-7xl">
             {project.title}
           </h1>
 
@@ -61,9 +61,9 @@ export default async function ProjectPage({
           </div>
 
           {/* Text */}
-          <div className="max-w-4xl">
-            <div className="prose prose-invert prose-xl max-w-none">
-              <p className="text-xl leading-relaxed whitespace-pre-wrap opacity-95 sm:text-2xl">
+          <div className="w-full max-w-6xl">
+            <div className="prose prose-invert prose-xl md:px-12">
+              <p className="text-xl leading-relaxed font-semibold whitespace-pre-wrap opacity-95 sm:text-2xl">
                 {project.content}
               </p>
             </div>
