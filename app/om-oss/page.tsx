@@ -16,7 +16,7 @@ export default async function OmOssPage() {
       <div className="min-h-screen">
         <main className="mx-auto max-w-7xl px-6 py-20">
           {/* INTRO TEXT */}
-          <p className="mb-20 px-8 text-lg leading-relaxed md:px-42 md:text-xl">
+          <p className="mb-20 px-8 text-lg leading-relaxed font-semibold md:px-42 md:text-xl">
             HÖGproduktion bildades våren 2024 och verkar för att konstnärer ska
             kunna experimentera fritt med form och uttryck i scenkonstfältet.
             Med särskilt fokus på queera perspektiv, normbrytande sexualitet och
