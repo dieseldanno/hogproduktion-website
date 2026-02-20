@@ -3,10 +3,15 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import ProjectsList from '@/components/admin/ProjectsList';
+import { redirect } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 
 export default async function AdminDashboard() {
   const session = await getServerSession(authOptions);
-  if (!session) return null;
+  // Redirect till login om ingen session
+  if (!session) {
+    redirect('/admin/login');
+  }
 
   const projects = await prisma.project.findMany({
     orderBy: { createdAt: 'desc' },
@@ -15,6 +20,15 @@ export default async function AdminDashboard() {
   return (
     <div className="min-h-screen">
       <div className="mx-auto max-w-7xl px-6 py-16">
+        <div className="mb-8 flex justify-end">
+          {/* logga ut-knapp */}
+          <button
+            onClick={() => signOut({ callbackUrl: '/admin/login' })}
+            className="rounded-full bg-red-600 px-6 py-3 text-lg font-bold text-white shadow transition hover:bg-red-700"
+          >
+            Logga ut
+          </button>
+        </div>
         <h1 className="mb-12 text-center text-6xl font-black tracking-tighter uppercase drop-shadow-2xl md:text-7xl lg:text-9xl">
           ADMIN PANEL
         </h1>
