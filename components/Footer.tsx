@@ -26,13 +26,23 @@ export default function Footer() {
             <FaFacebookF />
           </Link>
         </div>
-        <div className="flex flex-col items-center gap-2 text-sm">
+        <div className="flex flex-col items-center gap-2">
           <a
             href="mailto:hogproduktion@gmail.com"
             className="text-custom-orange-70 hover:text-custom-orange transition"
           >
             hogproduktion@gmail.com
           </a>
+        </div>
+        <div className="text-custom-orange hover:text-custom-orange text-xs font-semibold tracking-wide uppercase italic transition">
+          Developed by{' '}
+          <Link
+            href="https://github.com/dieseldanno"
+            target="_blank"
+            className="uppercase underline underline-offset-4"
+          >
+            Danno Tharmarajah
+          </Link>
         </div>
       </div>
     </footer>

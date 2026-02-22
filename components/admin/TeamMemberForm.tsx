@@ -70,14 +70,14 @@ export default function TeamMemberForm() {
         value={name}
         onChange={(e) => setName(e.target.value)}
         required
-        className="w-full rounded-lg border-4 border-black bg-slate-50 p-5 text-2xl font-black text-black placeholder-white/50"
+        className="w-full rounded-lg border-4 border-black bg-slate-50 p-5 text-2xl font-black text-black placeholder-slate-500"
       />
-      <input
+      {/* <input
         placeholder="ROLL"
         value={role}
         onChange={(e) => setRole(e.target.value)}
         className="w-full rounded-lg border-4 border-black bg-slate-50 p-5 text-2xl font-black text-black placeholder-slate-500"
-      />
+      /> */}
       <textarea
         placeholder='LÅNG TEXT – "VEM ÄR JAG"'
         rows={4}
@@ -93,13 +93,13 @@ export default function TeamMemberForm() {
         className="block w-full text-lg file:mr-6 file:rounded-full file:bg-pink-600 file:px-8 file:py-4 file:text-black"
       />
       <input
-        placeholder="INSTAGRAM"
+        placeholder="hogproduktion...."
         value={instagram}
         onChange={(e) => setInstagram(e.target.value)}
         className="w-full rounded-lg border-4 border-black bg-transparent p-5 text-xl placeholder-slate-500"
       />
       <input
-        placeholder="MAIL"
+        placeholder="hogproduktion@gmail.com...."
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         className="w-full rounded-lg border-4 border-black bg-transparent p-5 text-xl placeholder-slate-500"

@@ -67,41 +67,13 @@ export default async function Home() {
       <EmailMarquee />
 
       <main className="relative flex-1 overflow-hidden">
-        {/* STICKY CENTER LOGO
-        <div className="pointer-events-none absolute z-20 flex items-center justify-center sm:fixed md:inset-0">
-          <Image
-            src="/hoglogowhite.png"
-            alt="Högproduktion logo"
-            width={1200}
-            height={1200}
-            className="h-auto w-full object-cover"
-            priority
-          />
-        </div> */}
-
-        {/* MASSIV GHOST TEXT BAKGRUND */}
-        <div className="pointer-events-none fixed inset-0 z-0 flex items-center justify-center overflow-hidden">
-          <div
-            className="text-custom-orange leading-[0.8] font-black uppercase opacity-80"
-            style={{
-              /* clamp(Minsta storlek, Föredragen storlek, Maxstorlek) */
-              fontSize: 'clamp(160px, 12vw, 180px)',
-              lineHeight: '0.75',
-              transform: 'rotate(-12deg) scale(1.2)', // Rotera och skala upp för att fylla ut
-              // filter: 'blur(1px)', // Valfritt: lite blur gör det ännu mer "bakgrunds-aktigt"
-              width: '150%', // Bredare än skärmen
-              textAlign: 'center',
-            }}
-          >
-            HÖGproduktion bildades våren 2024 och verkar för att konstnärer ska
-            kunna experimentera fritt med form och uttryck i scenkonstfältet.
-            Med särskilt fokus på queera perspektiv, normbrytande sexualitet och
-            erfarenheter av marginalisering, arbetar kollektivet i en
-            experimentell och tillåtande miljö där gränser tänjs och nya
-            sceniska möjligheter får ta plats.
-          </div>
-        </div>
-
+        {/* BAKGRUNDSBILD */}
+        <div
+          className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: "url('/rosarok.jpg')",
+          }}
+        />
         {/* GRID LAYOUT */}
         <div className="relative grid h-full grid-cols-2">
           {/* VÄNSTER egen scroll */}
@@ -117,4 +89,45 @@ export default async function Home() {
       </main>
     </div>
   );
+}
+
+{
+  /* MASSIV GHOST TEXT BAKGRUND */
+}
+// <div className="pointer-events-none fixed inset-0 z-0 flex items-center justify-center overflow-hidden">
+//   <div
+//     className="text-custom-orange leading-[0.8] font-black uppercase opacity-80"
+//     style={{
+//       /* clamp(Minsta storlek, Föredragen storlek, Maxstorlek) */
+//       fontSize: 'clamp(160px, 12vw, 180px)',
+//       lineHeight: '0.75',
+//       transform: 'rotate(-12deg) scale(1.2)', // Rotera och skala upp för att fylla ut
+//       // filter: 'blur(1px)', // Valfritt: lite blur gör det ännu mer "bakgrunds-aktigt"
+//       width: '150%', // Bredare än skärmen
+//       textAlign: 'center',
+//     }}
+//   >
+//     HÖGproduktion bildades våren 2024 och verkar för att konstnärer ska
+//     kunna experimentera fritt med form och uttryck i scenkonstfältet.
+//     Med särskilt fokus på queera perspektiv, normbrytande sexualitet och
+//     erfarenheter av marginalisering, arbetar kollektivet i en
+//     experimentell och tillåtande miljö där gränser tänjs och nya
+//     sceniska möjligheter får ta plats.
+//   </div>
+// </div>
+
+{
+  /* STICKY CENTER LOGO */
+}
+{
+  /* <div className="pointer-events-none absolute z-20 flex items-center justify-center sm:fixed md:inset-0">
+          <Image
+            src="/hoglogowhite.png"
+            alt="Högproduktion logo"
+            width={1200}
+            height={1200}
+            className="h-auto w-full object-cover"
+            priority
+          />
+        </div> */
 }

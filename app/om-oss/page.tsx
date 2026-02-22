@@ -27,7 +27,7 @@ export default async function OmOssPage() {
 
           {/* GRID MED ASYMMETRISK LAYOUT */}
           {members.length === 0 ? (
-            <div className="py-32 text-center">
+            <div className="py-8 text-center">
               <p className="text-4xl font-black opacity-70 md:text-6xl">
                 Här var det tomt...
               </p>
@@ -37,32 +37,32 @@ export default async function OmOssPage() {
               {members.map((member, i) => (
                 <div
                   key={member.id}
-                  className={`group relative overflow-hidden rounded-3xl bg-white/10 backdrop-blur-lg transition-transform duration-500 hover:scale-105 hover:bg-white/20`}
+                  className={`group relative overflow-hidden bg-white/10 backdrop-blur-lg`}
                   style={{
                     transform: `rotate(${[-2, 0, 2][i % 3]}deg)`,
                   }}
                 >
                   {/* BILD */}
                   {member.image ? (
-                    <div className="aspect-[4/5] overflow-hidden">
+                    <div className="aspect-4/5 overflow-hidden">
                       <Image
                         src={member.image}
                         alt={member.name}
                         width={300}
                         height={375}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        className="h-full w-full object-cover"
                       />
                     </div>
                   ) : (
-                    <div className="aspect-[4/5] bg-white/20" />
+                    <div className="aspect-4/5 bg-white/20" />
                   )}
 
                   {/* TEXT */}
                   <div className="p-8">
                     <h2 className="mb-2 text-4xl font-black">{member.name}</h2>
-                    <p className="mb-4 text-2xl font-bold text-orange-500">
+                    {/* <p className="mb-4 text-2xl font-bold text-orange-500">
                       {member.role}
-                    </p>
+                    </p> */}
                     <p className="mb-6 text-lg leading-relaxed opacity-90">
                       {member.bio}
                     </p>

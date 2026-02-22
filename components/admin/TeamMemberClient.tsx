@@ -75,7 +75,7 @@ export default function TeamMemberClient({
                     )}
                     <div>
                       <h3 className="text-3xl font-black">{member.name}</h3>
-                      <p className="text-2xl text-orange-500">{member.role}</p>
+                      {/* <p className="text-2xl text-orange-500">{member.role}</p> */}
                       {member.instagram && (
                         <p className="text-lg opacity-80">
                           @{member.instagram}
