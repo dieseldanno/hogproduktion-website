@@ -18,7 +18,7 @@ export default function MenuGrid() {
         </Link>
         <Link
           href="/om-oss"
-          className="hover:text-custom-pink inline-block bg-black px-2 py-1 transition duration-300 hover:drop-shadow-sm"
+          className="hover:text-custom-pink inline-block bg-black px-2 py-1 whitespace-nowrap transition duration-300 hover:drop-shadow-sm"
         >
           OM OSS
         </Link>
