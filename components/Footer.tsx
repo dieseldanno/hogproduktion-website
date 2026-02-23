@@ -35,11 +35,11 @@ export default function Footer() {
           </a>
         </div>
         <div className="text-custom-orange hover:text-custom-orange text-xs font-semibold tracking-wide uppercase italic transition">
-          Developed by{' '}
+          Website developed by{' '}
           <Link
             href="https://github.com/dieseldanno"
             target="_blank"
-            className="uppercase underline underline-offset-4"
+            className="hover:text-custom-pink font-bold uppercase transition"
           >
             Danno Tharmarajah
           </Link>
