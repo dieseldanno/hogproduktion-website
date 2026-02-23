@@ -77,7 +77,7 @@ export default async function Home() {
         {/* GRID LAYOUT */}
         <div className="relative grid h-full grid-cols-2">
           {/* VÄNSTER egen scroll */}
-          <div className="hide-scrollbar z-30 overflow-y-auto p-2">
+          <div className="hide-scrollbar z-30 overflow-y-auto py-2">
             <ProjectTitleGrid />
           </div>
 
