@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { revalidatePath } from 'next/cache';
 
 export async function DELETE(
   req: Request,
@@ -15,6 +16,8 @@ export async function DELETE(
     await prisma.teamMember.delete({
       where: { id },
     });
+
+    revalidatePath('/om-oss');
     return new Response(null, { status: 204 }); // 204 = "Deleted successfully"
   } catch (error) {
     console.error('Delete error:', error);

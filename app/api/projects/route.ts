@@ -3,6 +3,22 @@ import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]/route';
 import { generateUniqueSlug } from '@/lib/generateSlug';
+import { revalidatePath } from 'next/cache';
+
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const current = searchParams.get('current');
+
+  const where = current === null ? {} : { isCurrent: current === 'true' };
+
+  const projects = await prisma.project.findMany({
+    where,
+    orderBy: { createdAt: 'desc' },
+    include: { images: true },
+  });
+
+  return NextResponse.json(projects);
+}
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -55,6 +71,9 @@ export async function POST(req: NextRequest) {
         },
       },
     });
+
+    revalidatePath('/aktuellt');
+    revalidatePath('/arkiv');
 
     return NextResponse.json(project, { status: 201 });
   } catch (error) {

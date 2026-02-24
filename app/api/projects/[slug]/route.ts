@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { generateUniqueSlug } from '@/lib/generateSlug';
+import { revalidatePath } from 'next/cache';
 
 export async function PUT(
   req: Request,
@@ -43,6 +44,9 @@ export async function PUT(
       isCurrent: isCurrent ?? undefined,
     },
   });
+
+  revalidatePath('/aktuellt');
+  revalidatePath('/arkiv');
 
   return Response.json(updated);
 }
