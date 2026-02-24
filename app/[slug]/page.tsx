@@ -7,6 +7,12 @@ import Footer from '@/components/Footer';
 import BackButton from '@/components/BackButton';
 import GallerySlider from '@/components/GallerySlider';
 
+const getVideoThumbnail = (videoUrl: string): string => {
+  return videoUrl
+    .replace('/video/upload/', '/video/upload/so_2/')
+    .replace('.mp4', '.jpg');
+};
+
 export default async function ProjectPage({
   params,
 }: {
@@ -41,6 +47,7 @@ export default async function ProjectPage({
               <div className="w-full max-w-6xl overflow-hidden">
                 <video
                   src={project.video}
+                  poster={getVideoThumbnail(project.video)}
                   controls
                   className="h-auto max-h-[80vh] w-full object-contain"
                 />
