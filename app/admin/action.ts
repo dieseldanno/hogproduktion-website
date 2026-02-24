@@ -10,9 +10,10 @@ export async function deleteProject(slug: string) {
     });
 
     // Rensa cachen så att ändringen syns direkt på alla sidor
-    revalidatePath('/admin');
     revalidatePath('/');
     revalidatePath(`/${slug}`);
+    revalidatePath(`/aktuellt`);
+    revalidatePath(`/arkiv`);
 
     return { success: true };
   } catch (error) {
