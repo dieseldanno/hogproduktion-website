@@ -18,7 +18,7 @@ export default async function ProjectPage({
 }: {
   params: { slug: string };
 }) {
-  const { slug } = params;
+  const { slug } = await params;
 
   if (!slug) notFound();
 
