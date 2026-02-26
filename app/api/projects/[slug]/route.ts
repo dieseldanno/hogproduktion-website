@@ -45,11 +45,8 @@ export async function PUT(
     },
   });
 
-  revalidatePath('/');
   revalidatePath('/aktuellt');
   revalidatePath('/arkiv');
-  revalidatePath(`/${slug}`);
-  revalidatePath(`/${newSlug}`);
 
   return Response.json(updated);
 }
