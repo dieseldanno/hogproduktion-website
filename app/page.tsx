@@ -71,7 +71,7 @@ export default async function Home() {
         <div
           className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: "url('/rosarok.jpg')",
+            backgroundImage: "url('/rosarok.webp')",
           }}
         />
         {/* GRID LAYOUT */}

@@ -34,7 +34,7 @@ export default function Footer() {
             hogproduktion@gmail.com
           </a>
         </div>
-        <div className="text-custom-orange hover:text-custom-orange text-xs font-semibold tracking-wide uppercase italic transition">
+        <div className="text-custom-orange hover:text-custom-orange text-xs uppercase italic">
           Website developed by{' '}
           <Link
             href="https://github.com/dieseldanno"
