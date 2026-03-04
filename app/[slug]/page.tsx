@@ -37,7 +37,7 @@ export default async function ProjectPage({
       <div className="min-h-screen">
         <main className="mx-auto max-w-6xl px-6 pt-1 pb-8">
           <BackButton />
-          <h1 className="mb-6 text-center text-3xl leading-none font-black tracking-tight uppercase sm:text-5xl md:text-7xl">
+          <h1 className="mb-6 text-center text-3xl leading-none font-black tracking-tight whitespace-normal uppercase sm:text-5xl md:text-7xl">
             {project.title}
           </h1>
 
