@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     'performancekonst',
   ],
 
-  metadataBase: new URL('https://hogproduktion.se'),
+  metadataBase: new URL('https://hogproduktion.org'),
   alternates: {
     canonical: '/',
   },
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     title: 'HÖGproduktion',
     description:
       'HÖGproduktion skapar utrymme för konstnärer att utforska nya former och uttryck inom scenkonsten.',
-    url: 'https://hogproduktion.se',
+    url: 'https://hogproduktion.org',
     siteName: 'HÖGproduktion',
     locale: 'sv_SE',
     type: 'website',

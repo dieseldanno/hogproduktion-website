@@ -8,7 +8,7 @@ import { prisma } from '@/lib/prisma';
 export const metadata: Metadata = {
   title: 'HÖGproduktion — Experimentell Scenkonst',
   alternates: {
-    canonical: 'https://hogproduktion.se',
+    canonical: 'https://hogproduktion.org',
   },
 };
 
@@ -16,7 +16,7 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'PerformingGroup',
   name: 'HÖGproduktion',
-  url: 'https://hogproduktion.se',
+  url: 'https://hogproduktion.org',
   description:
     'HÖGproduktion skapar utrymme för konstnärer att utforska nya former och uttryck inom scenkonsten.',
   genre: ['Experimentell scenkonst', 'Queer performance', 'Teater', 'Queer'],
