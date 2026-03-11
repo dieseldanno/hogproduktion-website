@@ -3,7 +3,7 @@ import EmailMarquee from '@/components/EmailMarquee';
 import ProjectGrid from '@/components/startpage/ProjectGrid';
 import ProjectTitleGrid from '@/components/startpage/MenuGrid';
 import { prisma } from '@/lib/prisma';
-// import Image from 'next/image';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'HÖGproduktion — Experimentell Scenkonst',
@@ -91,15 +91,16 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="flex h-screen flex-col overflow-hidden">
-        <EmailMarquee />
-
         <main className="relative flex-1 overflow-hidden">
+          <EmailMarquee />
           {/* BAKGRUNDSBILD */}
-          <div
-            className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat"
-            style={{
-              backgroundImage: "url('/rosarok.webp')",
-            }}
+          <Image
+            src="/rosarok.webp"
+            alt="Rosa rök bakgrundsbild"
+            fill
+            priority
+            className="object-cover object-center"
+            style={{ zIndex: 0 }}
           />
           {/* GRID LAYOUT */}
           <div className="relative grid h-full grid-cols-2">

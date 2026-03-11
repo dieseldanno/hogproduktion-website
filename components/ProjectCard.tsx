@@ -104,6 +104,7 @@ export default function ProjectCard({
               <Image
                 src={project.image}
                 alt={project.title}
+                priority
                 width={1200}
                 height={1500}
                 sizes="(max-width: 640px) 100vw, 50vw"

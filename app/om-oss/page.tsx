@@ -48,6 +48,7 @@ export default async function OmOssPage() {
                       <Image
                         src={member.image}
                         alt={member.name}
+                        priority
                         width={300}
                         height={375}
                         className="h-full w-full object-cover"
