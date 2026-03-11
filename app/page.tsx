@@ -1,8 +1,30 @@
+import { Metadata } from 'next';
 import EmailMarquee from '@/components/EmailMarquee';
 import ProjectGrid from '@/components/startpage/ProjectGrid';
 import ProjectTitleGrid from '@/components/startpage/MenuGrid';
 import { prisma } from '@/lib/prisma';
 // import Image from 'next/image';
+
+export const metadata: Metadata = {
+  title: 'HÖGproduktion — Experimentell Scenkonst',
+  alternates: {
+    canonical: 'https://hogproduktion.se',
+  },
+};
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'PerformingGroup',
+  name: 'HÖGproduktion',
+  url: 'https://hogproduktion.se',
+  description:
+    'HÖGproduktion skapar utrymme för konstnärer att utforska nya former och uttryck inom scenkonsten.',
+  genre: ['Experimentell scenkonst', 'Queer performance', 'Teater', 'Queer'],
+  location: {
+    '@type': 'Place',
+    name: 'Stockholm, Sverige',
+  },
+};
 
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
@@ -63,31 +85,37 @@ export default async function Home() {
   const shuffledImages = shuffleArray(uniqueImages);
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden">
-      <EmailMarquee />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <div className="flex h-screen flex-col overflow-hidden">
+        <EmailMarquee />
 
-      <main className="relative flex-1 overflow-hidden">
-        {/* BAKGRUNDSBILD */}
-        <div
-          className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: "url('/rosarok.webp')",
-          }}
-        />
-        {/* GRID LAYOUT */}
-        <div className="relative grid h-full grid-cols-2">
-          {/* VÄNSTER egen scroll */}
-          <div className="hide-scrollbar z-30 overflow-y-auto py-2">
-            <ProjectTitleGrid />
-          </div>
+        <main className="relative flex-1 overflow-hidden">
+          {/* BAKGRUNDSBILD */}
+          <div
+            className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: "url('/rosarok.webp')",
+            }}
+          />
+          {/* GRID LAYOUT */}
+          <div className="relative grid h-full grid-cols-2">
+            {/* VÄNSTER egen scroll */}
+            <div className="hide-scrollbar z-30 overflow-y-auto py-2">
+              <ProjectTitleGrid />
+            </div>
 
-          {/* HÖGER egen scroll */}
-          <div className="hide-scrollbar z-30 overflow-y-auto py-2">
-            <ProjectGrid projects={shuffledImages} />
+            {/* HÖGER egen scroll */}
+            <div className="hide-scrollbar z-30 overflow-y-auto py-2">
+              <ProjectGrid projects={shuffledImages} />
+            </div>
           </div>
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </>
   );
 }
 
