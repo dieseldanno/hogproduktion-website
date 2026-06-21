@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Project } from '@prisma/client';
+import { resolveVideoThumbnail } from '@/lib/videoThumbnail';
 
 interface ProjectCardProps {
   project: Project;
@@ -14,11 +15,10 @@ export default function ProjectCard({
   const isTextProject = project.type === 'TEXT';
   const isVideoProject = project.type === 'VIDEO';
 
-  const getVideoThumbnail = (videoUrl: string): string => {
-    return videoUrl
-      .replace('/video/upload/', '/video/upload/so_2/')
-      .replace('.mp4', '.jpg');
-  };
+  const videoPoster = resolveVideoThumbnail(
+    project.video,
+    project.videoThumbnail
+  );
 
   // --- LAYOUT FÖR VIDEO (Fullbredd, staplad) ---
   if (isVideoProject) {
@@ -37,10 +37,9 @@ export default function ProjectCard({
             <div className="aspect-video w-full">
               <video
                 src={project.video}
-                poster={getVideoThumbnail(project.video)}
+                poster={videoPoster}
                 controls
                 className="h-full w-full object-cover"
-                // Optional: lägg till poster={project.image} om du har en thumbnail
               />
             </div>
           ) : (

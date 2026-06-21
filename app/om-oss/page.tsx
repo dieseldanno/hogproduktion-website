@@ -4,11 +4,18 @@ import { Mail } from 'lucide-react';
 import { FaInstagram } from 'react-icons/fa';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
+import { getSiteContent, SITE_CONTENT_KEYS } from '@/lib/siteContent';
 
 export default async function OmOssPage() {
-  const members = await prisma.teamMember.findMany({
-    orderBy: { createdAt: 'desc' },
-  });
+  const [members, collaborators, intro] = await Promise.all([
+    prisma.teamMember.findMany({
+      orderBy: [{ order: 'asc' }, { createdAt: 'asc' }],
+    }),
+    prisma.collaborator.findMany({
+      orderBy: [{ order: 'asc' }, { createdAt: 'asc' }],
+    }),
+    getSiteContent(SITE_CONTENT_KEYS.ABOUT_INTRO),
+  ]);
 
   return (
     <>
@@ -16,16 +23,11 @@ export default async function OmOssPage() {
       <div className="min-h-screen">
         <main className="mx-auto max-w-7xl px-6 py-20">
           {/* INTRO TEXT */}
-          <p className="mb-20 px-8 text-lg leading-relaxed font-semibold md:px-42 md:text-xl">
-            HÖGproduktion bildades våren 2024 och verkar för att konstnärer ska
-            kunna experimentera fritt med form och uttryck i scenkonstfältet.
-            Med särskilt fokus på queera perspektiv, normbrytande sexualitet och
-            erfarenheter av marginalisering, arbetar kollektivet i en
-            experimentell och tillåtande miljö där gränser tänjs och nya
-            sceniska möjligheter får ta plats.
+          <p className="mb-20 whitespace-pre-wrap px-4 text-lg leading-relaxed font-semibold md:px-42 md:text-xl">
+            {intro}
           </p>
 
-          {/* GRID MED ASYMMETRISK LAYOUT */}
+          {/* TEAM-GRID – mindre kort, 2-3 per rad */}
           {members.length === 0 ? (
             <div className="py-8 text-center">
               <p className="text-4xl font-black opacity-70 md:text-6xl">
@@ -33,50 +35,50 @@ export default async function OmOssPage() {
               </p>
             </div>
           ) : (
-            <div className="grid auto-rows-min gap-12 md:grid-cols-2 lg:grid-cols-3">
+            <div className="mx-auto grid max-w-3xl grid-cols-2 gap-6 md:gap-8">
               {members.map((member, i) => (
                 <div
                   key={member.id}
-                  className={`group relative overflow-hidden bg-white/10 backdrop-blur-lg`}
+                  className="group relative overflow-hidden rounded-md bg-white/10 backdrop-blur-lg"
                   style={{
-                    transform: `rotate(${[-2, 0, 2][i % 3]}deg)`,
+                    transform: `rotate(${[-1, 1][i % 2]}deg)`,
                   }}
                 >
                   {/* BILD */}
                   {member.image ? (
-                    <div className="aspect-4/5 overflow-hidden">
+                    <div className="aspect-square overflow-hidden">
                       <Image
                         src={member.image}
                         alt={member.name}
-                        priority
-                        width={300}
-                        height={375}
+                        priority={i < 2}
+                        width={400}
+                        height={400}
                         className="h-full w-full object-cover"
+                        sizes="(max-width: 768px) 50vw, 25vw"
                       />
                     </div>
                   ) : (
-                    <div className="aspect-4/5 bg-white/20" />
+                    <div className="aspect-square bg-white/20" />
                   )}
 
                   {/* TEXT */}
-                  <div className="p-8">
-                    <h2 className="mb-2 text-4xl font-black">{member.name}</h2>
-                    {/* <p className="mb-4 text-2xl font-bold text-orange-500">
-                      {member.role}
-                    </p> */}
-                    <p className="mb-6 text-lg leading-relaxed opacity-90">
+                  <div className="p-4 md:p-5">
+                    <h2 className="mb-2 text-2xl font-black md:text-3xl">
+                      {member.name}
+                    </h2>
+                    <p className="mb-4 text-sm leading-relaxed opacity-90 md:text-base">
                       {member.bio}
                     </p>
 
                     {/* KONTAKT */}
-                    <div className="flex flex-wrap gap-6">
+                    <div className="flex flex-wrap gap-4">
                       {member.email && (
                         <a
                           href={`mailto:${member.email}`}
-                          className="text-custom-orange hover:text-custom-pink flex items-center gap-3 transition"
+                          className="text-custom-orange hover:text-custom-pink flex items-center gap-2 transition"
                         >
-                          <Mail size={28} />
-                          <span className="text-sm underline">Mail</span>
+                          <Mail size={20} />
+                          <span className="text-xs underline">Mail</span>
                         </a>
                       )}
                       {member.instagram && (
@@ -84,10 +86,10 @@ export default async function OmOssPage() {
                           href={`https://instagram.com/${member.instagram.replace('@', '')}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-custom-orange hover:text-custom-pink flex items-center gap-3 transition"
+                          className="text-custom-orange hover:text-custom-pink flex items-center gap-2 transition"
                         >
-                          <FaInstagram size={28} /> {/* här */}
-                          <span className="text-sm underline">
+                          <FaInstagram size={20} />
+                          <span className="text-xs underline">
                             @{member.instagram.replace('@', '')}
                           </span>
                         </a>
@@ -97,6 +99,22 @@ export default async function OmOssPage() {
                 </div>
               ))}
             </div>
+          )}
+
+          {/* ÖVRIGA MEDVERKANDE */}
+          {collaborators.length > 0 && (
+            <section className="mt-24">
+              <h2 className="mb-8 text-3xl font-black uppercase md:text-5xl">
+                Övriga medverkande
+              </h2>
+              <ul className="flex flex-wrap gap-x-6 gap-y-2 text-lg md:text-xl">
+                {collaborators.map((c) => (
+                  <li key={c.id} className="font-semibold">
+                    {c.name}
+                  </li>
+                ))}
+              </ul>
+            </section>
           )}
         </main>
       </div>

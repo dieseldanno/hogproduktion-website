@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && prisma migrate deploy && next build",
     "start": "next start",
     "lint": "eslint",
     "prisma:generate": "dotenv -e .env -- npx prisma generate",
@@ -14,22 +14,15 @@
     "prisma:seed": "dotenv -e .env -- npx tsx scripts/seed-admin.ts"
   },
   "dependencies": {
-    "@hookform/resolvers": "^5.2.2",
     "@prisma/client": "^6.19.0",
-    "@vercel/blob": "^2.0.0",
     "bcryptjs": "^3.0.3",
-    "gsap": "^3.14.2",
     "lucide-react": "^0.553.0",
     "next": "^16.1.6",
     "next-auth": "^4.24.13",
-    "pg": "^8.18.0",
     "prisma": "^6.19.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "react-hook-form": "^7.66.0",
-    "react-icons": "^5.5.0",
-    "slugify": "^1.6.6",
-    "zod": "^4.1.12"
+    "react-icons": "^5.5.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

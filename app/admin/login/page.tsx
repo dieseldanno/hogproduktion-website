@@ -21,7 +21,7 @@ export default function LoginPage() {
     });
 
     if (res?.error) {
-      setError('Invalid email or password');
+      setError('Fel e-post eller lösenord');
     } else {
       router.push('/admin');
     }

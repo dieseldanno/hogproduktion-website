@@ -35,7 +35,7 @@ export default function Footer() {
           </a>
         </div>
         <div className="text-custom-orange hover:text-custom-orange text-xs uppercase italic">
-          Website developed by{' '}
+          Web and design by{' '}
           <Link
             href="https://github.com/dieseldanno"
             target="_blank"

@@ -14,9 +14,23 @@ export async function PUT(
   const { slug } = await params;
   const body = await req.json();
 
-  const { title, preview, content, image, video, type, isCurrent } = body;
+  const {
+    title,
+    preview,
+    content,
+    image,
+    video,
+    type,
+    isCurrent,
+    addedImages, // array<string> – nya bild-URL:er
+    deletedImageIds, // array<string> – ID:n på galleribilder att ta bort
+  } = body;
 
-  // Hämta projektet för att se om titeln faktiskt har ändrats
+  // För videoThumbnail: skilj på "inte skickat" (undefined → behåll)
+  // och "explicit null" (ta bort).
+  const videoThumbnailUpdate =
+    'videoThumbnail' in body ? body.videoThumbnail : undefined;
+
   const existingProject = await prisma.project.findUnique({
     where: { slug },
   });
@@ -25,10 +39,38 @@ export async function PUT(
     return new Response('Project not found', { status: 404 });
   }
 
-  // Generera ny slug endast om titeln är annorlunda än den befintliga
+  // Ny slug bara om titeln ändrats
   let newSlug = slug;
   if (title && title !== existingProject.title) {
     newSlug = await generateUniqueSlug(title);
+  }
+
+  // Ta bort markerade galleribilder
+  if (Array.isArray(deletedImageIds) && deletedImageIds.length > 0) {
+    await prisma.projectImage.deleteMany({
+      where: {
+        id: { in: deletedImageIds },
+        projectId: existingProject.id,
+      },
+    });
+  }
+
+  // Lägg till nya galleribilder (om det finns några)
+  if (Array.isArray(addedImages) && addedImages.length > 0) {
+    // Hämta största nuvarande order för att lägga till efter
+    const maxOrder = await prisma.projectImage.aggregate({
+      where: { projectId: existingProject.id },
+      _max: { order: true },
+    });
+    const startOrder = (maxOrder._max.order ?? -1) + 1;
+
+    await prisma.projectImage.createMany({
+      data: addedImages.map((url: string, i: number) => ({
+        url,
+        order: startOrder + i,
+        projectId: existingProject.id,
+      })),
+    });
   }
 
   const updated = await prisma.project.update({
@@ -38,15 +80,19 @@ export async function PUT(
       slug: newSlug,
       preview: preview ?? null,
       content: content ?? null,
-      image: image ?? undefined, // Behåller gammal om ingen ny skickas
-      video: video ?? undefined, // Behåller gammal om ingen ny skickas
+      image: image ?? undefined,
+      video: video ?? undefined,
+      videoThumbnail: videoThumbnailUpdate,
       type: type || 'IMAGE',
       isCurrent: isCurrent ?? undefined,
     },
   });
 
+  revalidatePath('/');
   revalidatePath('/aktuellt');
   revalidatePath('/arkiv');
+  revalidatePath(`/${slug}`);
+  if (newSlug !== slug) revalidatePath(`/${newSlug}`);
 
   return Response.json(updated);
 }

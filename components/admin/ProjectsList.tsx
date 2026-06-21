@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import { ToggleCurrent } from '@/components/admin/ToggleCurrent';
 import Link from 'next/link';
 import { Project } from '@prisma/client';
 import { useRouter } from 'next/navigation';
-import { deleteProject } from '@/app/admin/action';
+import { deleteProject, moveProject } from '@/app/admin/action';
 
 type Props = {
   projects: Project[];
@@ -13,20 +13,30 @@ type Props = {
 
 export default function ProjectsList({ projects }: Props) {
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [isPending, setIsPending] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
   async function handleDelete(slug: string) {
-    setIsPending(true);
-    try {
-      await deleteProject(slug);
-      setDeletingId(null);
-      router.refresh(); // Uppdaterar listan
-    } catch {
-      alert('Något gick fel vid radering.');
-    } finally {
-      setIsPending(false);
-    }
+    startTransition(async () => {
+      try {
+        await deleteProject(slug);
+        setDeletingId(null);
+        router.refresh();
+      } catch {
+        alert('Något gick fel vid radering.');
+      }
+    });
+  }
+
+  function handleMove(id: string, direction: 'up' | 'down') {
+    startTransition(async () => {
+      try {
+        await moveProject(id, direction);
+        router.refresh();
+      } catch {
+        alert('Något gick fel vid omflyttning.');
+      }
+    });
   }
 
   return (
@@ -36,22 +46,44 @@ export default function ProjectsList({ projects }: Props) {
           Inga produktioner än.
         </p>
       ) : (
-        projects.map((p) => (
+        projects.map((p, idx) => (
           <div
             key={p.id}
             className="group flex flex-col gap-6 rounded-3xl bg-white/10 p-6 transition-all hover:bg-white/20 sm:flex-row sm:items-center sm:justify-between md:p-8"
           >
-            <div className="flex-1">
-              <h3 className="mb-2 text-3xl font-black md:text-4xl lg:text-5xl">
-                {p.title}
-              </h3>
-              <div className="flex flex-wrap items-center gap-3 text-lg md:text-2xl">
-                <span className="text-base opacity-70 md:text-lg">
-                  {new Date(p.createdAt).toLocaleDateString('sv-SE')}
-                </span>
-                <span className="rounded bg-white/10 px-2 py-1 text-xs tracking-widest uppercase opacity-50">
-                  {p.type}
-                </span>
+            <div className="flex items-center gap-4 flex-1">
+              {/* REORDER-KNAPPAR */}
+              <div className="flex flex-col gap-1">
+                <button
+                  onClick={() => handleMove(p.id, 'up')}
+                  disabled={isPending || idx === 0}
+                  aria-label="Flytta upp"
+                  className="rounded bg-white/10 px-3 py-1 text-xl font-bold transition hover:bg-white/30 disabled:opacity-30"
+                >
+                  ↑
+                </button>
+                <button
+                  onClick={() => handleMove(p.id, 'down')}
+                  disabled={isPending || idx === projects.length - 1}
+                  aria-label="Flytta ner"
+                  className="rounded bg-white/10 px-3 py-1 text-xl font-bold transition hover:bg-white/30 disabled:opacity-30"
+                >
+                  ↓
+                </button>
+              </div>
+
+              <div className="flex-1">
+                <h3 className="mb-2 text-3xl font-black md:text-4xl lg:text-5xl">
+                  {p.title}
+                </h3>
+                <div className="flex flex-wrap items-center gap-3 text-lg md:text-2xl">
+                  <span className="text-base opacity-70 md:text-lg">
+                    {new Date(p.createdAt).toLocaleDateString('sv-SE')}
+                  </span>
+                  <span className="rounded bg-white/10 px-2 py-1 text-xs tracking-widest uppercase opacity-50">
+                    {p.type}
+                  </span>
+                </div>
               </div>
             </div>
 

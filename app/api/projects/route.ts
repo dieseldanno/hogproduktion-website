@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 
   const projects = await prisma.project.findMany({
     where,
-    orderBy: { createdAt: 'desc' },
+    orderBy: [{ order: 'asc' }, { createdAt: 'desc' }],
     include: { images: true },
   });
 
@@ -30,27 +30,25 @@ export async function POST(req: NextRequest) {
     title,
     preview,
     content,
-    image, // This is the URL from AddProjectsForm.tsx
-    video, // This is the URL from AddProjectsForm.tsx
+    image,
+    video,
+    videoThumbnail,
     type,
     isCurrent,
-    images, // This is the array of URLs from AddProjectsForm.tsx
+    images,
   } = body;
 
   if (!title) {
     return new Response('Missing project title', { status: 400 });
   }
 
-  // Generate unique slug
   const slug = await generateUniqueSlug(title);
 
-  // Archive old current project if new one is set to current
-  // if (isCurrent === true) {
-  //   await prisma.project.updateMany({
-  //     where: { isCurrent: true },
-  //     data: { isCurrent: false },
-  //   });
-  // }
+  // Nya projekt läggs sist i ordningen
+  const maxOrder = await prisma.project.aggregate({
+    _max: { order: true },
+  });
+  const nextOrder = (maxOrder._max.order ?? -1) + 1;
 
   try {
     const project = await prisma.project.create({
@@ -61,8 +59,10 @@ export async function POST(req: NextRequest) {
         content: content || null,
         image: image || null,
         video: video || null,
+        videoThumbnail: videoThumbnail || null,
         type: type,
         isCurrent: isCurrent,
+        order: nextOrder,
         images: {
           create: images?.map((url: string, index: number) => ({
             url,
@@ -72,6 +72,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    revalidatePath('/');
     revalidatePath('/aktuellt');
     revalidatePath('/arkiv');
 

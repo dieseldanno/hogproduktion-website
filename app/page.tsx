@@ -90,32 +90,36 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="flex h-screen flex-col overflow-hidden">
-        <main className="relative flex-1 overflow-hidden">
-          <EmailMarquee />
-          {/* BAKGRUNDSBILD */}
-          <Image
-            src="/rosarok.webp"
-            alt="Rosa rök bakgrundsbild"
-            fill
-            priority
-            className="object-cover object-center"
-            style={{ zIndex: 0 }}
-          />
-          {/* GRID LAYOUT */}
-          <div className="relative grid h-full grid-cols-2">
-            {/* VÄNSTER egen scroll */}
-            <div className="hide-scrollbar z-30 overflow-y-auto py-2">
-              <ProjectTitleGrid />
-            </div>
-
-            {/* HÖGER egen scroll */}
-            <div className="hide-scrollbar z-30 overflow-y-auto py-2">
-              <ProjectGrid projects={shuffledImages} />
-            </div>
-          </div>
-        </main>
+      {/* BAKGRUNDSBILD – fixerad bakom allt så den inte scrollar */}
+      <div className="fixed inset-0 -z-10">
+        <Image
+          src="/rosarok.webp"
+          alt="Rosa rök bakgrundsbild"
+          fill
+          priority
+          className="object-cover object-center"
+        />
       </div>
+
+      <main className="relative">
+        {/* MARQUEE – sticky så den alltid syns */}
+        <div className="sticky top-0 z-40">
+          <EmailMarquee />
+        </div>
+
+        {/* GRID LAYOUT – hela sidan scrollar nu, höger kolumn driver scrollet */}
+        <div className="grid grid-cols-2">
+          {/* VÄNSTER – sticky meny som följer med när man scrollar */}
+          <div className="sticky top-6 z-30 h-[calc(100vh-1.5rem)] overflow-hidden py-2">
+            <ProjectTitleGrid />
+          </div>
+
+          {/* HÖGER – flödar nedåt, sidans naturliga scroll skrollar denna */}
+          <div className="z-30 py-2">
+            <ProjectGrid projects={shuffledImages} />
+          </div>
+        </div>
+      </main>
     </>
   );
 }

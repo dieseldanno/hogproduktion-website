@@ -1,22 +1,55 @@
-// src/app/[slug]/page.tsx
+// app/[slug]/page.tsx
 import { prisma } from '@/lib/prisma';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { Metadata } from 'next';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import BackButton from '@/components/BackButton';
 import GallerySlider from '@/components/GallerySlider';
+import { resolveVideoThumbnail } from '@/lib/videoThumbnail';
 
-const getVideoThumbnail = (videoUrl: string): string => {
-  return videoUrl
-    .replace('/video/upload/', '/video/upload/so_2/')
-    .replace('.mp4', '.jpg');
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const project = await prisma.project.findUnique({
+    where: { slug },
+    select: {
+      title: true,
+      preview: true,
+      content: true,
+      image: true,
+      videoThumbnail: true,
+    },
+  });
+
+  if (!project) return { title: 'Inte hittad' };
+
+  const description =
+    project.preview?.slice(0, 160) ||
+    project.content?.slice(0, 160) ||
+    undefined;
+
+  const ogImage = project.image || project.videoThumbnail || undefined;
+
+  return {
+    title: project.title,
+    description,
+    openGraph: {
+      title: project.title,
+      description,
+      images: ogImage ? [{ url: ogImage }] : undefined,
+    },
+  };
+}
 
 export default async function ProjectPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
 
@@ -30,6 +63,11 @@ export default async function ProjectPage({
   });
 
   if (!project) notFound();
+
+  const videoPoster = resolveVideoThumbnail(
+    project.video,
+    project.videoThumbnail
+  );
 
   return (
     <>
@@ -47,7 +85,7 @@ export default async function ProjectPage({
               <div className="w-full max-w-6xl overflow-hidden">
                 <video
                   src={project.video}
-                  poster={getVideoThumbnail(project.video)}
+                  poster={videoPoster}
                   controls
                   className="h-auto max-h-[80vh] w-full object-contain"
                 />

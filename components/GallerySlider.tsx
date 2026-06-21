@@ -92,6 +92,7 @@ export default function GallerySlider({ images, title }: Props) {
       {/* Vänster */}
       <button
         onClick={prev}
+        aria-label="Föregående bild"
         className="absolute top-1/2 left-6 -translate-y-1/2 bg-black/40 px-4 py-2 text-white backdrop-blur transition hover:bg-black/70"
       >
         ←
@@ -100,6 +101,7 @@ export default function GallerySlider({ images, title }: Props) {
       {/* Höger */}
       <button
         onClick={next}
+        aria-label="Nästa bild"
         className="absolute top-1/2 right-6 -translate-y-1/2 bg-black/40 px-4 py-2 text-white backdrop-blur transition hover:bg-black/70"
       >
         →

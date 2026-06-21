@@ -1,55 +1,46 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-
 export default function EmailMarquee() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-
   const emailContact = '>>> hogproduktion@gmail.com <<<';
-
-  useEffect(() => {
-    const track = trackRef.current;
-    const container = containerRef.current;
-    if (!track || !container) return;
-
-    const tl = gsap.timeline({ repeat: -1 });
-
-    tl.fromTo(
-      track,
-      { x: container.offsetWidth },
-      {
-        x: -track.offsetWidth,
-        duration: 20,
-        ease: 'none',
-      }
-    );
-
-    const handleEnter = () => tl.pause();
-    const handleLeave = () => tl.play();
-
-    container.addEventListener('mouseenter', handleEnter);
-    container.addEventListener('mouseleave', handleLeave);
-
-    return () => {
-      container.removeEventListener('mouseenter', handleEnter);
-      container.removeEventListener('mouseleave', handleLeave);
-      tl.kill();
-    };
-  }, []);
 
   return (
     <div
-      ref={containerRef}
       className="border-custom-pink relative z-10 w-full overflow-hidden border-b"
+      aria-label="Kontakt"
     >
-      <div
-        ref={trackRef}
-        className="hover:bg-custom-pink flex w-max bg-black px-2 py-0.5 text-sm font-medium tracking-wide whitespace-nowrap uppercase hover:text-black"
+      <a
+        href="mailto:hogproduktion@gmail.com"
+        className="block w-full"
+        aria-label="Skicka mail till hogproduktion@gmail.com"
       >
-        <a href="mailto:hogproduktion@gmail.com">{emailContact}</a>
-      </div>
+        <div className="marquee-track inline-block whitespace-nowrap bg-black px-2 py-0.5 text-sm font-medium tracking-wide uppercase hover:bg-custom-pink hover:text-black">
+          {emailContact}
+        </div>
+      </a>
+
+      <style jsx>{`
+        .marquee-track {
+          animation: marquee 20s linear infinite;
+          will-change: transform;
+        }
+        .marquee-track:hover {
+          animation-play-state: paused;
+        }
+        @keyframes marquee {
+          from {
+            transform: translateX(100vw);
+          }
+          to {
+            transform: translateX(-100%);
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .marquee-track {
+            animation: none;
+            transform: translateX(0);
+          }
+        }
+      `}</style>
     </div>
   );
 }

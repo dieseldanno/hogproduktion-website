@@ -19,10 +19,25 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
   const [type, setType] = useState<ProjectType>(project.type as ProjectType);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [videoThumbnailFile, setVideoThumbnailFile] = useState<File | null>(
+    null
+  );
+  const [removeVideoThumbnail, setRemoveVideoThumbnail] = useState(false);
   const [galleryFiles, setGalleryFiles] = useState<File[]>([]);
+  const [keptImageIds, setKeptImageIds] = useState<string[]>(
+    project.images?.map((i) => i.id) || []
+  );
   const [isCurrent, setIsCurrent] = useState(project.isCurrent);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  const existingImages = project.images || [];
+
+  const toggleKeepImage = (id: string) => {
+    setKeptImageIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,17 +45,29 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
 
     let image: string | null = project.image || null;
     let video: string | null = project.video || null;
-    const galleryUrls: string[] = [];
+    let videoThumbnail: string | null = project.videoThumbnail || null;
+    const addedImages: string[] = [];
 
     try {
       if (imageFile) image = await uploadFile(imageFile);
       if (videoFile) video = await uploadFile(videoFile);
 
-      // Ladda upp nya galleri-bilder
+      // Tar bort thumbnail om markerat, annars laddar upp ny om filen valts
+      if (removeVideoThumbnail && !videoThumbnailFile) {
+        videoThumbnail = null;
+      } else if (videoThumbnailFile) {
+        videoThumbnail = await uploadFile(videoThumbnailFile);
+      }
+
       for (const file of galleryFiles) {
         const url = await uploadFile(file);
-        galleryUrls.push(url);
+        addedImages.push(url);
       }
+
+      // Bilder som tagits bort = de som inte längre finns i keptImageIds
+      const deletedImageIds = existingImages
+        .filter((img) => !keptImageIds.includes(img.id))
+        .map((img) => img.id);
 
       const res = await fetch(`/api/projects/${project.slug}`, {
         method: 'PUT',
@@ -51,9 +78,12 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
           content: content || null,
           image,
           video,
+          videoThumbnail,
           type,
           isCurrent,
-          images: galleryUrls.length > 0 ? galleryUrls : undefined,
+          addedImages: addedImages.length > 0 ? addedImages : undefined,
+          deletedImageIds:
+            deletedImageIds.length > 0 ? deletedImageIds : undefined,
         }),
       });
 
@@ -105,7 +135,6 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
                     alt="Nuvarande"
                     width={1280}
                     height={720}
-                    unoptimized
                     className="max-h-96 rounded-2xl shadow-2xl"
                   />
                 </div>
@@ -120,28 +149,90 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
           )}
 
           {type === 'VIDEO' && (
-            <div>
-              <label className="mb-4 block text-3xl font-black">
-                NY VIDEO (ändra inget för att behålla gammal)
-              </label>
-              {project.video && !videoFile && (
-                <div className="mb-6">
-                  <p className="mb-4 text-xl opacity-80">Nuvarande video:</p>
-                  <video
-                    controls
-                    className="max-h-96 w-full rounded-2xl shadow-2xl"
-                  >
-                    <source src={project.video} />
-                  </video>
-                </div>
-              )}
-              <input
-                type="file"
-                accept="video/*"
-                onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
-                className="block w-full text-xl file:mr-8 file:rounded-full file:bg-slate-300 file:px-12 file:py-6 file:text-2xl file:font-black"
-              />
-            </div>
+            <>
+              <div>
+                <label className="mb-4 block text-3xl font-black">
+                  NY VIDEO (ändra inget för att behålla gammal)
+                </label>
+                {project.video && !videoFile && (
+                  <div className="mb-6">
+                    <p className="mb-4 text-xl opacity-80">Nuvarande video:</p>
+                    <video
+                      controls
+                      className="max-h-96 w-full rounded-2xl shadow-2xl"
+                    >
+                      <source src={project.video} />
+                    </video>
+                  </div>
+                )}
+                <input
+                  type="file"
+                  accept="video/*"
+                  onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
+                  className="block w-full text-xl file:mr-8 file:rounded-full file:bg-slate-300 file:px-12 file:py-6 file:text-2xl file:font-black"
+                />
+              </div>
+
+              {/* CUSTOM VIDEO THUMBNAIL */}
+              <div>
+                <label className="mb-4 block text-3xl font-black">
+                  VIDEO-THUMBNAIL (bild som visas innan video spelas)
+                </label>
+
+                {project.videoThumbnail &&
+                  !videoThumbnailFile &&
+                  !removeVideoThumbnail && (
+                    <div className="mb-6">
+                      <Image
+                        src={project.videoThumbnail}
+                        alt="Nuvarande thumbnail"
+                        width={640}
+                        height={360}
+                        className="max-h-60 rounded-2xl shadow-2xl"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setRemoveVideoThumbnail(true)}
+                        className="mt-4 rounded-full bg-rose-500 px-6 py-3 text-base font-bold text-white uppercase shadow transition hover:bg-rose-600"
+                      >
+                        Ta bort thumbnail
+                      </button>
+                    </div>
+                  )}
+
+                {removeVideoThumbnail && !videoThumbnailFile && (
+                  <div className="mb-6 rounded-2xl border-2 border-dashed border-rose-400 bg-rose-50 p-6">
+                    <p className="mb-3 text-lg font-bold text-rose-700">
+                      Thumbnail kommer tas bort när du sparar.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setRemoveVideoThumbnail(false)}
+                      className="rounded-full bg-slate-300 px-6 py-3 text-base font-bold text-slate-800 uppercase transition hover:bg-slate-400"
+                    >
+                      Ångra
+                    </button>
+                  </div>
+                )}
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    setVideoThumbnailFile(e.target.files?.[0] || null);
+                    // Om man väljer en ny fil ska "ta bort"-flaggan rensas
+                    if (e.target.files?.[0]) setRemoveVideoThumbnail(false);
+                  }}
+                  className="block w-full text-xl file:mr-8 file:rounded-full file:bg-slate-300 file:px-12 file:py-6 file:text-2xl file:font-black"
+                />
+                <p className="mt-2 text-base opacity-70">
+                  Ladda upp en stillbild om du inte vill att en automatisk
+                  thumbnail från videon ska användas. Om du tar bort den
+                  anpassade thumbnailen används automatisk frame från videon
+                  igen.
+                </p>
+              </div>
+            </>
           )}
 
           {/* PREVIEW & CONTENT */}
@@ -166,30 +257,53 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
             />
           </div>
 
-          {/* GALLERI */}
+          {/* BEFINTLIGT GALLERI */}
+          {existingImages.length > 0 && (
+            <div>
+              <label className="mb-4 block text-3xl font-black">
+                BEFINTLIGA GALLERIBILDER
+              </label>
+              <p className="mb-4 text-base opacity-70">
+                Klicka på X för att markera en bild för borttagning.
+              </p>
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                {existingImages.map((img) => {
+                  const isKept = keptImageIds.includes(img.id);
+                  return (
+                    <div key={img.id} className="relative">
+                      <Image
+                        src={img.url}
+                        alt="Galleri"
+                        width={300}
+                        height={300}
+                        className={`aspect-square w-full rounded-lg object-cover shadow-md transition ${
+                          isKept ? '' : 'opacity-30 grayscale'
+                        }`}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => toggleKeepImage(img.id)}
+                        className={`absolute top-2 right-2 flex h-10 w-10 items-center justify-center rounded-full text-xl font-black text-white shadow-lg transition ${
+                          isKept
+                            ? 'bg-red-600 hover:bg-red-700'
+                            : 'bg-emerald-600 hover:bg-emerald-700'
+                        }`}
+                        aria-label={isKept ? 'Ta bort bild' : 'Återställ bild'}
+                      >
+                        {isKept ? '×' : '↺'}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* LÄGG TILL NYA GALLERI-BILDER */}
           <div>
             <label className="mb-4 block text-3xl font-black">
-              BILDGALLERI (VALFRITT) - VÄLJ FLERA BILDER
+              LÄGG TILL NYA BILDER I GALLERIET (valfritt)
             </label>
-
-            {/* Visa befintliga bilder */}
-            {project.images &&
-              project.images.length > 0 &&
-              !galleryFiles.length && (
-                <div className="mb-4 flex flex-wrap gap-4">
-                  {project.images.map((img) => (
-                    <Image
-                      key={img.id}
-                      src={img.url}
-                      alt="Nuvarande galleri"
-                      width={300}
-                      height={300}
-                      className="rounded-lg shadow-md"
-                    />
-                  ))}
-                </div>
-              )}
-
             <input
               type="file"
               accept="image/*"
@@ -199,6 +313,11 @@ export default function EditProjectForm({ project }: EditProjectFormProps) {
               }
               className="block w-full text-xl file:mr-8 file:rounded-full file:bg-slate-300 file:px-12 file:py-6 file:text-2xl file:font-black"
             />
+            {galleryFiles.length > 0 && (
+              <p className="mt-2 text-base opacity-70">
+                {galleryFiles.length} ny(a) bild(er) markerade för uppladdning.
+              </p>
+            )}
           </div>
 
           {/* AKTUELL? */}

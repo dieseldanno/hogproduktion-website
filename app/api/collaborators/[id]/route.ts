@@ -12,28 +12,19 @@ export async function PUT(
 
   const { id } = await params;
   const body = await req.json();
+  const name = typeof body.name === 'string' ? body.name.trim() : '';
 
-  const data: Record<string, string | null> = {};
-  if (typeof body.name === 'string') data.name = body.name;
-  if (typeof body.bio === 'string') data.bio = body.bio;
-  if ('email' in body) data.email = body.email || null;
-  if ('instagram' in body)
-    data.instagram = body.instagram
-      ? String(body.instagram).replace('@', '')
-      : null;
-  if ('image' in body) data.image = body.image || null;
-  if ('role' in body) data.role = body.role || null;
+  if (!name) return new Response('Namn saknas', { status: 400 });
 
   try {
-    const updated = await prisma.teamMember.update({
+    const updated = await prisma.collaborator.update({
       where: { id },
-      data,
+      data: { name },
     });
     revalidatePath('/om-oss');
     revalidatePath('/admin/about');
     return Response.json(updated);
-  } catch (error) {
-    console.error('Update error:', error);
+  } catch {
     return new Response('Hittades inte', { status: 404 });
   }
 }
@@ -48,15 +39,11 @@ export async function DELETE(
   const { id } = await params;
 
   try {
-    await prisma.teamMember.delete({
-      where: { id },
-    });
-
+    await prisma.collaborator.delete({ where: { id } });
     revalidatePath('/om-oss');
     revalidatePath('/admin/about');
     return new Response(null, { status: 204 });
-  } catch (error) {
-    console.error('Delete error:', error);
-    return new Response('Member not found', { status: 404 });
+  } catch {
+    return new Response('Hittades inte', { status: 404 });
   }
 }

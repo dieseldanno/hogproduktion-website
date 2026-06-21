@@ -5,11 +5,10 @@ import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 
 export async function GET() {
-  const members = await prisma.teamMember.findMany({
+  const items = await prisma.collaborator.findMany({
     orderBy: [{ order: 'asc' }, { createdAt: 'asc' }],
   });
-
-  return NextResponse.json(members);
+  return NextResponse.json(items);
 }
 
 export async function POST(req: Request) {
@@ -17,34 +16,20 @@ export async function POST(req: Request) {
   if (!session) return new Response('Unauthorized', { status: 401 });
 
   const body = await req.json();
-
   const name = typeof body.name === 'string' ? body.name.trim() : '';
-  const bio = typeof body.bio === 'string' ? body.bio.trim() : '';
-  if (!name || !bio) {
-    return new Response('Namn och bio krävs', { status: 400 });
-  }
+  if (!name) return new Response('Namn saknas', { status: 400 });
 
-  // Sätt order = max + 1 så nya medlemmar hamnar sist
-  const maxOrder = await prisma.teamMember.aggregate({
+  const maxOrder = await prisma.collaborator.aggregate({
     _max: { order: true },
   });
   const nextOrder = (maxOrder._max.order ?? -1) + 1;
 
-  const member = await prisma.teamMember.create({
-    data: {
-      name,
-      role: body.role || null,
-      bio,
-      email: body.email || null,
-      instagram: body.instagram
-        ? String(body.instagram).replace('@', '')
-        : null,
-      image: body.image || null,
-      order: nextOrder,
-    },
+  const created = await prisma.collaborator.create({
+    data: { name, order: nextOrder },
   });
 
   revalidatePath('/om-oss');
   revalidatePath('/admin/about');
-  return Response.json(member);
+
+  return Response.json(created);
 }

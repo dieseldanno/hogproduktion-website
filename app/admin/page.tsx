@@ -16,7 +16,7 @@ export default async function AdminDashboard() {
   }
 
   const projects = await prisma.project.findMany({
-    orderBy: { createdAt: 'desc' },
+    orderBy: [{ order: 'asc' }, { createdAt: 'desc' }],
   });
 
   return (

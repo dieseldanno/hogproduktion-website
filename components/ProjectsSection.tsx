@@ -14,7 +14,7 @@ export default async function ProjectsSection({
 }: Props) {
   const projects: Project[] = await prisma.project.findMany({
     where: { isCurrent },
-    orderBy: { createdAt: 'desc' }, // nyast först
+    orderBy: [{ order: 'asc' }, { createdAt: 'desc' }],
   });
   const defaultEmpty = isCurrent
     ? 'Inga aktuella produktioner just nu.'

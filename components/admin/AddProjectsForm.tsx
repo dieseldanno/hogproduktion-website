@@ -10,6 +10,9 @@ export default function AddProjectForm() {
   const [content, setContent] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [videoThumbnailFile, setVideoThumbnailFile] = useState<File | null>(
+    null
+  );
   const [galleryFiles, setGalleryFiles] = useState<File[]>([]);
   const [type, setType] = useState<'IMAGE' | 'TEXT' | 'VIDEO'>('IMAGE');
   const [isCurrent, setIsCurrent] = useState(true);
@@ -22,21 +25,20 @@ export default function AddProjectForm() {
 
     let imageUrl: string | null = null;
     let videoUrl: string | null = null;
+    let videoThumbnailUrl: string | null = null;
     const galleryUrls: string[] = [];
 
     try {
-      // Ladda bara upp det som är relevant för vald typ
-      // if (type === 'IMAGE' && imageFile) {
-      //   imageUrl = await uploadFile(imageFile);
-      // } else if (type === 'VIDEO' && videoFile) {
-      //   videoUrl = await uploadFile(videoFile);
-      // }
       if (imageFile) {
         imageUrl = await uploadFile(imageFile);
       }
 
       if (videoFile) {
         videoUrl = await uploadFile(videoFile);
+      }
+
+      if (videoThumbnailFile) {
+        videoThumbnailUrl = await uploadFile(videoThumbnailFile);
       }
 
       if (galleryFiles.length > 0) {
@@ -55,6 +57,7 @@ export default function AddProjectForm() {
           content: content || null,
           image: imageUrl,
           video: videoUrl,
+          videoThumbnail: videoThumbnailUrl,
           type,
           isCurrent,
           images: galleryUrls,
@@ -152,18 +155,39 @@ export default function AddProjectForm() {
           )}
 
           {type === 'VIDEO' && (
-            <div>
-              <label className="mb-4 block text-3xl font-black">
-                VIDEO FRÅN DATORN (MP4)
-              </label>
-              <input
-                type="file"
-                accept="video/*"
-                onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
-                required={type === 'VIDEO'}
-                className="block w-full cursor-pointer text-xl file:mr-8 file:rounded-full file:bg-slate-300 file:px-12 file:py-6 file:text-2xl file:font-black"
-              />
-              <div className="mt-8 flex flex-col gap-8">
+            <div className="space-y-8">
+              <div>
+                <label className="mb-4 block text-3xl font-black">
+                  VIDEO FRÅN DATORN (MP4)
+                </label>
+                <input
+                  type="file"
+                  accept="video/*"
+                  onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
+                  required={type === 'VIDEO'}
+                  className="block w-full cursor-pointer text-xl file:mr-8 file:rounded-full file:bg-slate-300 file:px-12 file:py-6 file:text-2xl file:font-black"
+                />
+              </div>
+
+              <div>
+                <label className="mb-4 block text-3xl font-black">
+                  THUMBNAIL (valfritt – stillbild att visa innan video spelas)
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) =>
+                    setVideoThumbnailFile(e.target.files?.[0] || null)
+                  }
+                  className="block w-full cursor-pointer text-xl file:mr-8 file:rounded-full file:bg-slate-300 file:px-12 file:py-6 file:text-2xl file:font-black"
+                />
+                <p className="mt-2 text-base opacity-70">
+                  Lämna tomt om du vill att en automatisk thumbnail från videon
+                  ska användas.
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-8">
                 <textarea
                   placeholder="KORT TEXT (FÖR PREVIEW)"
                   value={preview}

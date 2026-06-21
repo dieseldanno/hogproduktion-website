@@ -4,9 +4,22 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { uploadFile } from '@/lib/upload';
 
-export default function TeamMemberForm() {
+type CreatedMember = {
+  id: string;
+  name: string;
+  bio: string;
+  email?: string | null;
+  instagram?: string | null;
+  image?: string | null;
+  role?: string | null;
+};
+
+interface Props {
+  onAdded?: (member: CreatedMember) => void;
+}
+
+export default function TeamMemberForm({ onAdded }: Props) {
   const [name, setName] = useState('');
-  const [role, setRole] = useState('');
   const [bio, setBio] = useState('');
   const [email, setEmail] = useState('');
   const [instagram, setInstagram] = useState('');
@@ -20,13 +33,10 @@ export default function TeamMemberForm() {
 
     try {
       let imageUrl: string | null = null;
-
-      //
       if (image) {
         imageUrl = await uploadFile(image);
       }
 
-      //
       const res = await fetch('/api/team', {
         method: 'POST',
         headers: {
@@ -34,7 +44,6 @@ export default function TeamMemberForm() {
         },
         body: JSON.stringify({
           name,
-          role,
           bio,
           email: email || null,
           instagram: instagram || null,
@@ -46,18 +55,23 @@ export default function TeamMemberForm() {
         throw new Error(await res.text());
       }
 
+      const created: CreatedMember = await res.json();
+
       // reset
       setName('');
-      setRole('');
       setBio('');
       setEmail('');
       setInstagram('');
       setImage(null);
 
-      router.refresh();
+      if (onAdded) {
+        onAdded(created);
+      } else {
+        router.refresh();
+      }
     } catch (err) {
       console.error(err);
-      alert('Något gick fel');
+      alert(`Något gick fel: ${err instanceof Error ? err.message : err}`);
     } finally {
       setLoading(false);
     }
@@ -72,12 +86,6 @@ export default function TeamMemberForm() {
         required
         className="w-full rounded-lg border-4 border-black bg-slate-50 p-5 text-2xl font-black text-black placeholder-slate-500"
       />
-      {/* <input
-        placeholder="ROLL"
-        value={role}
-        onChange={(e) => setRole(e.target.value)}
-        className="w-full rounded-lg border-4 border-black bg-slate-50 p-5 text-2xl font-black text-black placeholder-slate-500"
-      /> */}
       <textarea
         placeholder='LÅNG TEXT – "VEM ÄR JAG"'
         rows={4}
@@ -93,13 +101,13 @@ export default function TeamMemberForm() {
         className="block w-full text-lg file:mr-6 file:rounded-full file:bg-pink-600 file:px-8 file:py-4 file:text-black"
       />
       <input
-        placeholder="hogproduktion...."
+        placeholder="Instagram-användarnamn"
         value={instagram}
         onChange={(e) => setInstagram(e.target.value)}
         className="w-full rounded-lg border-4 border-black bg-transparent p-5 text-xl placeholder-slate-500"
       />
       <input
-        placeholder="hogproduktion@gmail.com...."
+        placeholder="E-post (valfritt)"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         className="w-full rounded-lg border-4 border-black bg-transparent p-5 text-xl placeholder-slate-500"

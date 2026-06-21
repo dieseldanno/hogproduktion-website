@@ -26,6 +26,9 @@ export default async function ProjectActionPage({
 
   const project = await prisma.project.findUnique({
     where: { slug },
+    include: {
+      images: { orderBy: { order: 'asc' } },
+    },
   });
 
   if (!project) notFound();
