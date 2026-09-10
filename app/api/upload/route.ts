@@ -1,79 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import crypto from 'crypto';
 
-// Max storlek per fil
-const MAX_IMAGE_BYTES = 15 * 1024 * 1024; // 15 MB
-const MAX_VIDEO_BYTES = 200 * 1024 * 1024; // 200 MB
-
-const ALLOWED_IMAGE = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
-const ALLOWED_VIDEO = ['video/mp4', 'video/quicktime', 'video/webm'];
-
-export const runtime = 'nodejs';
-// Tillåt större request body (Next.js har default 1MB)
-export const maxDuration = 60;
-
+/**
+ * Returnerar en signatur som klienten använder för att ladda upp
+ * direkt till Cloudinary. Det gör att stora filer (video) inte
+ * går genom Vercel, som har 4.5 MB request body-gräns.
+ */
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
-  if (!session) {
-    return new NextResponse('Unauthorized', { status: 401 });
-  }
+  if (!session) return new NextResponse('Unauthorized', { status: 401 });
 
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-  const uploadPreset = process.env.CLOUDINARY_UPLOAD_PRESET;
+  const apiKey = process.env.CLOUDINARY_API_KEY;
+  const apiSecret = process.env.CLOUDINARY_API_SECRET;
 
-  if (!cloudName || !uploadPreset) {
-    return new NextResponse('Cloudinary saknas i .env', { status: 500 });
-  }
-
-  const formData = await req.formData();
-  const file = formData.get('file');
-
-  if (!(file instanceof File)) {
-    return new NextResponse('Ingen fil bifogad', { status: 400 });
-  }
-
-  const isImage = ALLOWED_IMAGE.includes(file.type);
-  const isVideo = ALLOWED_VIDEO.includes(file.type);
-
-  if (!isImage && !isVideo) {
-    return new NextResponse(`Otillåten filtyp: ${file.type}`, { status: 400 });
-  }
-
-  const maxBytes = isImage ? MAX_IMAGE_BYTES : MAX_VIDEO_BYTES;
-  if (file.size > maxBytes) {
+  if (!cloudName || !apiKey || !apiSecret) {
     return new NextResponse(
-      `Filen är för stor (max ${Math.round(maxBytes / 1024 / 1024)} MB)`,
-      { status: 413 }
+      'Cloudinary konfiguration saknas (CLOUDINARY_CLOUD_NAME / CLOUDINARY_API_KEY / CLOUDINARY_API_SECRET)',
+      { status: 500 }
     );
   }
 
-  // Vidarebefordra till Cloudinary
-  const cloudForm = new FormData();
-  cloudForm.append('file', file);
-  cloudForm.append('upload_preset', uploadPreset);
+  const timestamp = Math.floor(Date.now() / 1000);
 
-  const resourceType = isVideo ? 'video' : 'image';
+  // Cloudinary-signaturen: SHA-1 av "timestamp=X" + API_SECRET.
+  // Om du vill signera fler parametrar (t.ex. folder), inkludera dem
+  // i sorterad ordning innan API_SECRET.
+  const paramsToSign = `timestamp=${timestamp}`;
+  const signature = crypto
+    .createHash('sha1')
+    .update(paramsToSign + apiSecret)
+    .digest('hex');
 
-  try {
-    const response = await fetch(
-      `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`,
-      {
-        method: 'POST',
-        body: cloudForm,
-      }
-    );
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      const message = errorData?.error?.message || 'Uppladdning misslyckades';
-      return new NextResponse(message, { status: 502 });
-    }
-
-    const data = await response.json();
-    return NextResponse.json({ url: data.secure_url });
-  } catch (error) {
-    console.error('Cloudinary error:', error);
-    return new NextResponse('Uppladdning misslyckades', { status: 500 });
-  }
+  return NextResponse.json({
+    signature,
+    timestamp,
+    apiKey,
+    cloudName,
+  });
 }
